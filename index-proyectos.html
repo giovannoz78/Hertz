@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Proyectos — sitio web de [Hz]</title>
+  <style>
+    @font-face {
+      font-family: 'CaviarDreams';
+      src: url('fonts/CaviarDreams.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: 'CaviarDreams', system-ui, Arial, sans-serif;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+      background: linear-gradient(#000, rgba(0,0,0,.6));
+      backdrop-filter: blur(6px);
+      z-index: 10;
+    }
+
+    .logo-box {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1.5px solid #fff;
+      border-radius: 8px;
+    }
+
+    .logo-box img {
+      max-width: 32px;
+      max-height: 32px;
+      filter: invert(1);
+    }
+
+    .topbar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      opacity: .9;
+    }
+
+    .topbar a:hover {
+      text-shadow: 0 0 6px #fff, 0 0 18px #ffffff88;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    .proyectos {
+      width: min(1200px, 92vw);
+      margin: 4vmin auto 8vmin;
+    }
+
+    .proyectos h1 {
+      margin: .5rem 2px 1rem;
+      font-size: clamp(20px, 3.4vmin, 28px);
+    }
+
+    .proj-grid {
+      display: grid;
+      gap: clamp(14px, 2.5vmin, 24px);
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    @media (min-width: 640px)  { .proj-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px)  { .proj-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1200px) { .proj-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .proj-card {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .proj-card figure {
+      margin: 0;
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 2px solid #000;
+      box-shadow:
+        0 0 4px #111,
+        0 0 10px #222;
+    }
+
+    .proj-card figure::before {
+      content: "";
+      display: block;
+      aspect-ratio: 1 / 1;
+    }
+
+    .proj-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(1) contrast(1.05);
+      transform: scale(1.02);
+      opacity: 0.05;
+      transition: transform .35s ease, filter .35s ease, opacity .35s ease;
+    }
+
+    .proj-card:hover img,
+    .proj-card:focus-visible img {
+      transform: scale(1.06);
+      filter: grayscale(0.1) contrast(1.1);
+      opacity: 1;
+    }
+
+    .proj-card figcaption {
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity .3s ease;
+      text-shadow: 0 2px 10px #000, 0 0 12px #000;
+    }
+
+    .proj-card:hover figcaption,
+    .proj-card:focus-visible figcaption {
+      opacity: 1;
+    }
+
+    .proj-card:focus-visible {
+      outline: 2px dashed #fff;
+      outline-offset: 6px;
+      border-radius: 12px;
+    }
+
+    footer {
+      opacity: .6;
+      text-align: center;
+      padding: 24px 0;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo-box" href="index.html"><img src="logo.svg" alt="Logo"></a>
+    <strong>[Hz]</strong>
+    <div class="spacer"></div>
+    <nav>
+      <a href="index.html">Inicio</a>
+    </nav>
+  </header>
+
+  <main class="proyectos">
+    <h1>Proyectos</h1>
+    <div class="proj-grid">
+      <a class="proj-card" href="#space-beat">
+        <figure><img src="assets/p1.png" alt="Space Beat"><figcaption>Reverso</figcaption></figure>
+      </a>
+      <a class="proj-card" href="#metachronal">
+        <figure><img src="assets/p1.png" alt="Metachronal"><figcaption>Visiones Sonoras de la Urbe</figcaption></figure>
+      </a>
+      <a class="proj-card" href="#phase">
+        <figure><img src="assets/p1.png" alt="Phase"><figcaption>Black Box</figcaption></figure>
+      </a>
+      <a class="proj-card" href="#volume">
+        <figure><img src="assets/p1.png" alt="Volume"><figcaption>Liminal</figcaption></figure>
+      </a>
+      <a class="proj-card" href="#city-lights">
+        <figure><img src="assets/p1.png" alt="City Lights"><figcaption>Interferencias</figcaption></figure>
+      </a>
+      <a class="proj-card" href="#mesh">
+        <figure><img src="assets/p1.png" alt="Mesh"><figcaption>Bön</figcaption></figure>
+      </a>
+      <a class="proj-card" href="#field">
+        <figure><img src="assets/p1.png" alt="Field"><figcaption>Frecuencias Nómades</figcaption></figure>
+      </a>
+      <a class="proj-card" href="#grid-room">
+        <figure><img src="assets/p1.png" alt="Grid Room"><figcaption>Biósfera</figcaption></figure>
+      </a>
+    </div>
+  </main>
+
+  <footer>© 2025</footer>
+</body>
+</html>

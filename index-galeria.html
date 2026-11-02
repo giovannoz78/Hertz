@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Galería — sitio web de [Hz]</title>
+  <style>
+    @font-face {
+      font-family: 'CaviarDreams';
+      src: url('fonts/CaviarDreams.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    :root{
+      --bg:#000;
+      --fg:#fff;
+      --muted:rgba(255,255,255,.65);
+      --accent:#4dd0e1; /* cian igual al link de Vimeo */
+    }
+
+    html, body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'CaviarDreams', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+
+    header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: linear-gradient(#000, rgba(0,0,0,.6));
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .stage{
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 20px;
+      padding: 20px;
+      min-height: 70vh;
+      align-items: start;
+    }
+
+    @media (max-width: 980px){
+      .stage{
+        grid-template-columns: 1fr;
+      }
+      .details{
+        order: 2;
+      }
+    }
+
+    .viewer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+      padding: 10px;
+    }
+
+    .viewer img {
+      max-height: 68vh;
+      max-width: 100%;
+      width: 100%;
+      object-fit: contain;
+      aspect-ratio: 16/9;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.06);
+      background: #0b0b0b;
+    }
+
+    .details{
+      position: sticky;
+      top: 64px;
+      align-self: start;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 16px 16px 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      box-shadow: 0 6px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .details h2{ margin:0 0 4px; font-size:1.1rem; letter-spacing:.2px; }
+    .details .meta{ margin:0 0 12px; font-size:.9rem; color:var(--muted); }
+    .details dl{
+      margin:8px 0 0;
+      display:grid;
+      grid-template-columns:120px 1fr;
+      gap:8px 12px;
+      align-items:start;
+      font-size:.95rem;
+    }
+    .details dt{ color:var(--muted); }
+    .details dd{ margin:0; }
+    .details .sep{
+      height:1px;
+      background:rgba(255,255,255,.08);
+      margin:10px 0 12px;
+      border-radius:1px;
+    }
+
+    .details a{
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .details a:hover{
+      text-decoration: underline;
+    }
+
+    .thumbnails {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      padding: 10px 20px 80px;
+      background: #000;
+    }
+
+    .thumb-container {
+      position: relative;
+      cursor: pointer;
+      width: 108px;
+    }
+
+    .thumb-container img {
+      width: 100%;
+      height: 60px;
+      border-radius: 6px;
+      object-fit: cover;
+      transition: opacity 0.25s, transform .15s ease, box-shadow .25s;
+      opacity: 0.55;
+      display: block;
+      border: 1px solid rgba(255,255,255,.08);
+      background: #0b0b0b;
+    }
+
+    .thumb-container:hover img {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    .thumb-container.active img{
+      opacity: 1;
+      outline: 2px solid var(--accent);
+      box-shadow: 0 0 10px var(--accent); /* glow cian */
+    }
+
+    .reflection {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .reflection img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleY(-1);
+      opacity: 0.35;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
+      filter: blur(.2px);
+    }
+  </style>
+</head>
+<body>
+  <header><a href="index.html">Inicio</a></header>
+
+  <section class="stage">
+    <div class="viewer">
+      <img id="mainImage" src="gallery/foto1.png" alt="Imagen principal" />
+    </div>
+
+    <aside class="details" id="details" aria-live="polite"></aside>
+  </section>
+
+  <div class="thumbnails" id="thumbs">
+    <script>
+      for (let i = 1; i <= 10; i++) {
+        document.write(`
+          <div class="thumb-container" data-index="${i}" onclick="showWork(${i})">
+            <img src="gallery/thumb${i}.png" alt="Foto ${i}" />
+            <div class="reflection"><img src="gallery/thumb${i}.png" alt="Reflejo ${i}" /></div>
+          </div>
+        `);
+      }
+    </script>
+  </div>
+
+  <script>
+    const workData = {
+      1:{ titulo:"Obra 1", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      2:{ titulo:"Obra 2", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      3:{ titulo:"Obra 3", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      4:{ titulo:"Obra 4", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      5:{ titulo:"Obra 5", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      6:{ titulo:"Obra 6", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      7:{ titulo:"Obra 7", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      8:{ titulo:"Obra 8", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      9:{ titulo:"Obra 9", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      10:{ titulo:"Obra 10", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      // ... resto de obras
+    };
+
+    const mainImage = document.getElementById("mainImage");
+    const details   = document.getElementById("details");
+    const thumbsWrap= document.getElementById("thumbs");
+
+    function renderDetails(data){
+      const colec = data.coleccion ? `Colección: ${data.coleccion}` : '';
+      const cod   = data.codigo ? ` · Código: ${data.codigo}` : '';
+      const video = data.video ? `<dt>Video</dt><dd><a href="${escapeHtml(data.video)}" target="_blank" rel="noopener">Ver en Vimeo</a></dd>` : '';
+      details.innerHTML = `
+        <h2>${escapeHtml(data.titulo || 'Obra')}</h2>
+        <p class="meta">${escapeHtml(colec + cod)}</p>
+        <div class="sep"></div>
+        <dl>
+          <dt>Autor</dt><dd>${escapeHtml(data.autor || '—')}</dd>
+          <dt>Año</dt><dd>${escapeHtml(data.anio || '—')}</dd>
+          <dt>Técnica</dt><dd>${escapeHtml(data.tecnica || '—')}</dd>
+          <dt>Dimensiones</dt><dd>${escapeHtml(data.dimensiones || '—')}</dd>
+          <dt>Duración</dt><dd>${escapeHtml(data.duracion || '—')}</dd>
+          <dt>Descripción</dt><dd>${escapeHtml(data.descripcion || '—')}</dd>
+          ${video}
+        </dl>
+      `;
+    }
+
+    function showWork(i){
+      mainImage.src = `gallery/foto${i}.png`;
+      mainImage.alt = `Imagen principal — Obra ${i}`;
+      const data = workData[i] || {};
+      renderDetails(data);
+      for (const el of thumbsWrap.querySelectorAll('.thumb-container')){
+        el.classList.toggle('active', Number(el.dataset.index) === i);
+      }
+    }
+
+    function escapeHtml(str){
+      return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+        .replaceAll('"','&quot;').replaceAll("'",'&#39;');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => { showWork(1); });
+  </script>
+</body>
+</html>

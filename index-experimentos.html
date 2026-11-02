@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Experimentos — sitio web de [Hz]</title>
+<style>
+  @font-face{font-family:'CaviarDreams';src:url('fonts/CaviarDreams.ttf') format('truetype');}
+  :root{
+    --bg:#000; --fg:#fff; --muted:rgba(255,255,255,.75);
+    --accent:#37c9d0; --pad:16px;
+  }
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:'CaviarDreams',system-ui,sans-serif}
+  header{
+    position:sticky; top:0; z-index:20; padding:10px var(--pad);
+    background:linear-gradient(#000, rgba(0,0,0,.6)); backdrop-filter:blur(6px);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  header a{color:#fff; text-decoration:none; font-weight:700; opacity:.9}
+  header a:hover{opacity:1}
+
+  /* Stage (centro) */
+  .stage{
+    position:fixed; inset:0; display:grid; place-items:center; padding:calc(var(--pad) + 24px) var(--pad);
+  }
+  .frame{
+    position:relative;
+    width:min(1100px, 86vw);           /* ancho máximo */
+    aspect-ratio: 16 / 10;             /* “rectángulo” estable */
+    background:#0b0b0b;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    box-shadow:0 20px 60px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.04);
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .frame img{
+    max-width:100%; max-height:100%;
+    width:auto; height:auto; object-fit:contain; display:block;
+    filter:contrast(1) saturate(1);
+    transition:opacity .25s ease;
+  }
+  .fade{ opacity:0; }
+
+  /* Flechas */
+  .nav{
+    position:fixed; top:50%; transform:translateY(-50%);
+    width:46px; height:46px; border-radius:50%;
+    display:grid; place-items:center; cursor:pointer; user-select:none;
+    background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.25);
+    backdrop-filter:blur(4px);
+    color:var(--fg); z-index:30;
+    transition:transform .12s ease, background .2s ease, opacity .2s ease;
+  }
+  .nav:hover{ background:rgba(0,0,0,.7); transform:translateY(-50%) scale(1.04); }
+  .nav:active{ transform:translateY(-50%) scale(.98); }
+  .prev{ left:18px; }
+  .next{ right:18px; }
+  .nav svg{ width:22px; height:22px; fill:none; stroke:var(--accent); stroke-width:2.5; }
+
+  /* Pie de foto */
+  .caption{
+    position:absolute; left:0; right:0; bottom:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.75));
+    color:#fff; padding:56px 18px 14px; font-size:.98rem;
+  }
+  .caption strong{ display:block; font-size:1.05rem; margin-bottom:4px; }
+  .caption a{ color:var(--accent); text-decoration:none; }
+  .caption a:hover{ text-decoration:underline; }
+
+  /* Indicador */
+  .pager{
+    position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+    font-size:.9rem; color:var(--muted); letter-spacing:.3px;
+    background:rgba(0,0,0,.35); padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(4px); z-index:25;
+  }
+
+  @media (max-width:720px){
+    .frame{ width:min(96vw, 740px); aspect-ratio: 16/11; border-radius:10px; }
+    .nav{ width:40px; height:40px; }
+    .nav svg{ width:18px; height:18px; }
+    .caption{ padding:44px 12px 12px; font-size:.9rem; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <a href="index.html">Inicio</a>
+    <span style="opacity:.6">Experimentos</span>
+  </header>
+
+  <div class="stage">
+    <div class="frame" id="frame">
+      <img id="hero" class="fade" src="" alt="Experimento" />
+      <div class="caption" id="caption"></div>
+    </div>
+  </div>
+
+  <!-- Flechas -->
+  <button class="nav prev" id="prev" aria-label="Anterior" title="Anterior (←)">
+    <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <button class="nav next" id="next" aria-label="Siguiente" title="Siguiente (→)">
+    <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+  </button>
+
+  <div class="pager" id="pager">1 / 1</div>
+
+  <script>
+    // --- Lista de imágenes y textos (editá rutas y captions) ---
+    const items = [
+      { src: 'experimentos/exp01.jpg', title: 'Numen', meta: '2025 · PROYECCIÓN SOBRE AGUA', link:'https://instagram.com/tu_cuenta' },
+      { src: 'experimentos/exp02.jpg', title: 'Estupor', meta: 'Proyección Mapping · entorno generativo', link:'' },
+      { src: 'experimentos/exp03.png', title: 'Piso LED reactivo', meta: 'Audio + pasos · prototipo', link:'' },
+      { src: 'experimentos/exp04.jpg', title: 'Proyección Láser', meta: 'Láser & Máquina de Humo', link:'' },
+      { src: 'experimentos/exp05.png', title: 'Entorno generativo', meta: 'Instalación', link:'' },
+      { src: 'experimentos/exp06.jpg', title: 'Numen', meta: '2025 · PROYECCIÓN SOBRE AGUA', link:'https://instagram.com/tu_cuenta' },
+      { src: 'experimentos/exp07.png', title: 'Estupor', meta: 'Mapping 3D · Impresión 3D', link:'' },
+      { src: 'experimentos/exp08.png', title: 'Piso LED reactivo', meta: 'Audio + pasos · prototipo', link:'' },
+      { src: 'experimentos/exp09.jpg', title: 'Proyección Láser', meta: 'Láser & Máquina de Humo', link:'' },
+      { src: 'experimentos/exp10.png', title: 'Entorno generativo', meta: 'Instalación', link:'' },
+    ];
+
+    // --- DOM refs ---
+    const hero    = document.getElementById('hero');
+    const caption = document.getElementById('caption');
+    const pager   = document.getElementById('pager');
+    const frame   = document.getElementById('frame');
+
+    let idx = 0;
+
+    function setCaption(item){
+      const link = item.link ? `<a href="${item.link}" target="_blank" rel="noopener"></a>` : '';
+      caption.innerHTML = `<strong>${escapeHtml(item.title || '')}</strong>${escapeHtml(item.meta || '')} ${link}`;
+    }
+
+    function show(i, {instant=false} = {}){
+      idx = (i + items.length) % items.length;
+      const item = items[idx];
+
+      hero.classList.add('fade');
+      // Pre-carga imagen
+      const img = new Image();
+      img.onload = () => {
+        hero.src = img.src;
+        hero.alt = item.title || 'Experimento';
+        setCaption(item);
+        pager.textContent = `${idx+1} / ${items.length}`;
+        if (instant) {
+          hero.classList.remove('fade');
+        } else {
+          requestAnimationFrame(()=> hero.classList.remove('fade'));
+        }
+        // Preload vecinos
+        preload((idx+1)%items.length);
+        preload((idx-1+items.length)%items.length);
+      };
+      img.src = item.src;
+    }
+
+    function preload(i){
+      const p = new Image();
+      p.src = items[i].src;
+    }
+
+    function next(){ show(idx+1); }
+    function prev(){ show(idx-1); }
+
+    // Controles
+    document.getElementById('next').addEventListener('click', next);
+    document.getElementById('prev').addEventListener('click', prev);
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='ArrowRight') next();
+      if(e.key==='ArrowLeft')  prev();
+    });
+
+    // Swipe táctil
+    (function addSwipe(el){
+      let sx=0, dx=0;
+      el.addEventListener('touchstart', e=>{sx=e.touches[0].clientX;});
+      el.addEventListener('touchmove',  e=>{dx=e.touches[0].clientX - sx;});
+      el.addEventListener('touchend',   ()=>{
+        if(Math.abs(dx)>40){ dx<0 ? next() : prev(); }
+        dx=0;
+      });
+    })(frame);
+
+    function escapeHtml(s){return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+
+    // Inicial
+    show(0,{instant:true});
+  </script>
+  
+</body>
+</html>

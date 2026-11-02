@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Biografía — sitio web de [Hz]</title>
+  <style>
+    @font-face {
+      font-family: 'CaviarDreams';
+      src: url('fonts/CaviarDreams.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: 'CaviarDreams', sans-serif;
+      overflow: hidden;
+    }
+
+    .bio-container {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 12vh auto;
+      padding: 2rem 2.5rem;
+      background: rgba(200, 200, 200, 0.1);
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      text-align: center;
+    }
+
+    .bio-container p {
+      text-align: justify;
+      margin-bottom: 1.4em;
+    }
+
+    .volver {
+      margin-top: 1.6em;
+      display: inline-block;
+      padding: 10px 16px;
+      background: #fff;
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 6px;
+    }
+
+    /* Barra de íconos sociales */
+    .social {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+    }
+    .social a {
+      width: 38px;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: transform .15s ease, background .2s ease, opacity .2s ease;
+      color: #fff;
+      text-decoration: none;
+    }
+    .social a:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.2);
+    }
+    .social svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor; /* blanco */
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="bio-container">
+    <h1>Biografía</h1>
+    
+    <p>
+      Nuestro principio es ser auténticos entre lo que pensamos, sentimos y hacemos. Las técnicas o recursos tecnológicos no son lo primordial, sino nuestro pensamiento sobre el arte en relación con lo que somos.
+    </p>
+
+    <a class="volver" href="index.html">Volver al inicio</a>
+
+    <!-- Íconos sociales -->
+    <div class="social" aria-label="Redes sociales">
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/hz.xyz/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0-5c2.7 0 3.04.01 4.11.06 1.06.05 1.78.22 2.41.47.65.25 1.2.59 1.74 1.13.54.54.88 1.09 1.13 1.74.25.63.42 1.35.47 2.41.05 1.07.06 1.41.06 4.11s-.01 3.04-.06 4.11c-.05 1.06-.22 1.78-.47 2.41a4.64 4.64 0 0 1-1.13 1.74 4.64 4.64 0 0 1-1.74 1.13c-.63.25-1.35.42-2.41.47-1.07.05-1.41.06-4.11.06s-3.04-.01-4.11-.06c-1.06-.05-1.78-.22-2.41-.47a4.64 4.64 0 0 1-1.74-1.13 4.64 4.64 0 0 1-1.13-1.74c-.25-.63-.42-1.35-.47-2.41C2.01 15.04 2 14.7 2 12s.01-3.04.06-4.11c.05-1.06.22-1.78.47-2.41.25-.65.59-1.2 1.13-1.74.54-.54 1.09-.88 1.74-1.13.63-.25 1.35-.42 2.41-.47C8.96 2.01 9.3 2 12 2Zm0 2c-2.65 0-2.97.01-4.02.06-.97.05-1.5.21-1.85.35-.47.18-.8.39-1.15.74-.35.35-.56.68-.74 1.15-.14.35-.3.88-.35 1.85C3.84 10.99 3.83 11.31 3.83 14s.01 3.01.06 4.06c.05.97.21 1.5.35 1.85.18.47.39.8.74 1.15.35.35.68.56 1.15.74.35.14.88.3 1.85.35 1.05.05 1.37.06 4.06.06s3.01-.01 4.06-.06c.97-.05 1.5-.21 1.85-.35.47-.18.8-.39 1.15-.74.35-.35.56-.68.74-1.15.14-.35.3-.88.35-1.85.05-1.05.06-1.37.06-4.06s-.01-3.01-.06-4.06c-.05-.97-.21-1.5-.35-1.85-.18-.47-.39-.8-.74-1.15a2.92 2.92 0 0 0-1.15-.74c-.35-.14-.88-.3-1.85-.35C14.99 4.01 14.67 4 12 4Zm5.25.9a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z"/>
+        </svg>
+      </a>
+      <!-- Vimeo -->
+      <a href="https://vimeo.com/giovannizapata" target="_blank" rel="noopener noreferrer" aria-label="Vimeo">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22.4 7.3c-.1 2-1.5 4.7-4.2 8.2-2.8 3.6-5.1 5.3-7 5.3-1.2 0-2.2-1.1-3-3.2l-1.6-6.1c-.6-2.1-1.2-3.2-1.9-3.2-.1 0-.6.3-1.5.9L2 8.1c1-.9 2-1.8 3-2.7 1.4-1.2 2.4-1.8 3.1-1.8 1.6-.2 2.6 1 3 3.6.4 2.8.7 4.5.9 5.1.5 2.3 1 3.4 1.7 3.4.5 0 1.3-.8 2.4-2.3s1.6-2.6 1.7-3.4c.2-1.3-.4-1.9-1.7-1.9-.6 0-1.2.1-1.8.4.6-2 2.1-2.9 4.5-2.9 3.3 0 3.9 1.8 3.8 3.9Z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <canvas></canvas>
+  <script>
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    const numParticles = 120;
+    const maxDist = 120;
+    let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+      }
+      update() {
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 150) {
+          this.vx -= dx * 0.0006;
+          this.vy -= dy * 0.0006;
+        }
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 1.3, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Limitar animación a un círculo
+      ctx.save();
+      ctx.beginPath();
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const radius = Math.min(canvas.width, canvas.height) * 0.45;
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.clip();
+
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        p1.update();
+        p1.draw();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < maxDist * maxDist) {
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - distSq / (maxDist * maxDist)})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      ctx.restore();
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

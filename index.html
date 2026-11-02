@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sitio web de [Hz]</title>
+  <style>
+    @font-face {
+      font-family: 'CaviarDreams';
+      src: url('fonts/CaviarDreams.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    :root {
+      --gap: clamp(10px, 2.5vmin, 24px);
+      --frame-w: min(86vw, 1100px);
+      --frame-h: min(76vh, 800px);
+      --text: #fff;
+      --bg: #000;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'CaviarDreams', system-ui, Arial, sans-serif;
+    }
+
+    /* Marca */
+    .brand {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
+      user-select: none;
+    }
+
+    .brand .logo-box {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border: 1.5px solid #fff;
+      border-radius: 8px;
+      box-sizing: border-box;
+      background: transparent;
+    }
+
+    .brand img {
+      max-width: 40px;
+      max-height: 40px;
+      filter: invert(1);
+      display: block;
+    }
+
+    .brand span {
+      font-weight: 700;
+      letter-spacing: .02em;
+      opacity: .8;
+    }
+
+    /* Hero */
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 6vmin 0;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(16px, 3vmin, 28px);
+    }
+
+    .frame {
+      width: var(--frame-w);
+      height: var(--frame-h);
+      display: flex;
+      gap: var(--gap);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .frame:focus-visible {
+      box-shadow: 0 0 0 3px #ffffff44;
+      border-radius: 12px;
+    }
+
+    .col {
+      height: 86%;
+      background: transparent;
+      border: 2px solid #fff;
+      box-sizing: border-box;
+      box-shadow: 0 0 6px #fff, 0 0 16px #ffffffb3, 0 0 32px #ffffff80, 0 0 64px #ffffff4d;
+      transition: width 380ms ease, height 300ms ease, transform 120ms ease;
+    }
+
+    .frame:active .col {
+      transform: translateY(0.5px);
+    }
+
+    .menu {
+      display: flex;
+      gap: clamp(14px, 3.2vmin, 28px);
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .menu a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: .02em;
+      opacity: .84;
+      transition: opacity .2s ease, text-shadow .2s ease;
+    }
+
+    .menu a:hover,
+    .menu a:focus {
+      opacity: 1;
+      text-shadow: 0 0 6px #fff, 0 0 18px #ffffff88;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGO -->
+  <header class="brand" aria-label="Marca">
+    <a class="logo-box" href="#">
+      <img src="logo.png" alt="Logotipo" onerror="this.style.display='none'">
+    </a>
+    <span>[Hz]</span>
+  </header>
+
+  <!-- Hero -->
+  <main>
+    <section class="wrap">
+      <div class="stack">
+        <div class="frame" id="frame" role="button" tabindex="0" title="Click para cambiar">
+          <div class="col"></div>
+          <div class="col"></div>
+          <div class="col"></div>
+        </div>
+
+        <nav class="menu" aria-label="Secciones">
+          <a href="index-experimentos.html" id="m1">Experimentos</a>
+          <a href="index-proyectos.html" id="m2">Proyectos</a>
+          <a href="index-galeria.html" id="m3">Galería</a>
+          <a href="index-bio.html" id="m4">Bio</a>
+          <a href="index-integrantes.html" id="m5">Integrantes</a>
+        </nav>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const frame = document.getElementById('frame');
+    const cols = [...document.querySelectorAll('.col')];
+
+    function randomProportions(n, minFrac = 0.18) {
+      const rest = 1 - n * minFrac;
+      const cuts = Array.from({ length: n - 1 }, () => Math.random()).sort((a, b) => a - b);
+      const parts = [];
+      let prev = 0;
+      for (let i = 0; i < cuts.length; i++) {
+        parts.push(cuts[i] - prev);
+        prev = cuts[i];
+      }
+      parts.push(1 - prev);
+      return parts.map(p => p * rest + minFrac);
+    }
+
+    function randomize() {
+      const widths = randomProportions(3, 0.18);
+      cols.forEach((el, i) => el.style.width = (widths[i] * 100).toFixed(2) + '%');
+      if (Math.random() < 0.5) {
+        [...cols].reverse().forEach(c => frame.appendChild(c));
+      }
+      const h = 78 + Math.floor(Math.random() * 13); // 78–90%
+      cols.forEach(el => el.style.height = h + '%');
+    }
+
+    window.addEventListener('DOMContentLoaded', randomize);
+    frame.addEventListener('click', randomize);
+    frame.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        randomize();
+      }
+    });
+  </script>
+
+</body>
+</html>
