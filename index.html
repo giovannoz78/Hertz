@@ -18,6 +18,7 @@
       --frame-h: min(76vh, 800px);
       --text: #fff;
       --bg: #000;
+      --accent: #4dd0e1;
     }
 
     html, body {
@@ -28,7 +29,12 @@
       font-family: 'CaviarDreams', system-ui, Arial, sans-serif;
     }
 
-    /* Marca */
+    /* Secciones: se ve una a la vez */
+    .sec { display: none; }
+    .sec.on { display: block; }
+    body.en-bio, body.en-experimentos { overflow: hidden; }
+
+    /* ================= MARCA + IDIOMAS (fijos en todas) ================= */
     .brand {
       position: fixed;
       top: 12px;
@@ -36,7 +42,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      z-index: 10;
+      z-index: 50;
       user-select: none;
     }
 
@@ -64,82 +70,25 @@
       opacity: .8;
     }
 
-    /* Hero */
-    .wrap {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 6vmin 0;
-    }
-
-    .stack {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: clamp(16px, 3vmin, 28px);
-    }
-
-    .frame {
-      width: var(--frame-w);
-      height: var(--frame-h);
-      display: flex;
-      gap: var(--gap);
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      outline: none;
-    }
-
-    .frame:focus-visible {
-      box-shadow: 0 0 0 3px #ffffff44;
-      border-radius: 12px;
-    }
-
-    .col {
-      height: 86%;
-      background: transparent;
-      border: 2px solid #fff;
-      box-sizing: border-box;
-      box-shadow: 0 0 6px #fff, 0 0 16px #ffffffb3, 0 0 32px #ffffff80, 0 0 64px #ffffff4d;
-      transition: width 380ms ease, height 300ms ease, transform 120ms ease;
-    }
-
-    .frame:active .col {
-      transform: translateY(0.5px);
-    }
-
-    .menu {
-      display: flex;
-      gap: clamp(14px, 3.2vmin, 28px);
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .menu a {
+    .brand .inicio {
+      display: none;
+      margin-left: 8px;
       color: #fff;
       text-decoration: none;
       font-weight: 600;
-      letter-spacing: .02em;
       opacity: .84;
       transition: opacity .2s ease, text-shadow .2s ease;
     }
+    .brand .inicio:hover { opacity: 1; text-shadow: 0 0 6px #fff, 0 0 18px #ffffff88; }
+    body:not(.en-inicio) .brand .inicio { display: inline; }
 
-    .menu a:hover,
-    .menu a:focus {
-      opacity: 1;
-      text-shadow: 0 0 6px #fff, 0 0 18px #ffffff88;
-      outline: none;
-    }
-
-    /* Idiomas */
     .lang {
       position: fixed;
       top: 24px;
       right: 16px;
       display: flex;
       gap: 12px;
-      z-index: 10;
+      z-index: 50;
     }
 
     .lang button {
@@ -169,30 +118,507 @@
       outline: 1px solid #ffffff40;
     }
 
-    /* Teléfono: que no se estire a lo alto */
+    /* barra oscura detrás de logo y banderas en las secciones internas */
+    .topfade {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 72px;
+      background: linear-gradient(#000, rgba(0,0,0,.6));
+      backdrop-filter: blur(6px);
+      z-index: 40;
+      display: none;
+    }
+    body:not(.en-inicio) .topfade { display: block; }
+
+    /* ================= INICIO ================= */
+    #sec-inicio .wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 6vmin 0;
+    }
+
+    #sec-inicio .stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(16px, 3vmin, 28px);
+    }
+
+    #sec-inicio .frame {
+      width: var(--frame-w);
+      height: var(--frame-h);
+      display: flex;
+      gap: var(--gap);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      outline: none;
+    }
+
+    #sec-inicio .frame:focus-visible {
+      box-shadow: 0 0 0 3px #ffffff44;
+      border-radius: 12px;
+    }
+
+    #sec-inicio .col {
+      height: 86%;
+      background: transparent;
+      border: 2px solid #fff;
+      box-sizing: border-box;
+      box-shadow: 0 0 6px #fff, 0 0 16px #ffffffb3, 0 0 32px #ffffff80, 0 0 64px #ffffff4d;
+      transition: width 380ms ease, height 300ms ease, transform 120ms ease;
+    }
+
+    #sec-inicio .frame:active .col {
+      transform: translateY(0.5px);
+    }
+
+    #sec-inicio .menu {
+      display: flex;
+      gap: clamp(14px, 3.2vmin, 28px);
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #sec-inicio .menu a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: .02em;
+      opacity: .84;
+      transition: opacity .2s ease, text-shadow .2s ease;
+    }
+
+    #sec-inicio .menu a:hover,
+    #sec-inicio .menu a:focus {
+      opacity: 1;
+      text-shadow: 0 0 6px #fff, 0 0 18px #ffffff88;
+      outline: none;
+    }
+
     @media (max-width: 720px) {
       :root {
         --frame-w: 88vw;
         --frame-h: 66vw;
       }
-      .wrap {
+      #sec-inicio .wrap {
         min-height: 100svh;
         padding: 0;
       }
     }
+
+    /* ================= EXPERIMENTOS ================= */
+    #sec-experimentos { --pad:16px; --muted:rgba(255,255,255,.75); --accent-x:#37c9d0; }
+
+    #sec-experimentos .stage{
+      position:fixed; inset:0; display:grid; place-items:center; padding:calc(var(--pad) + 24px) var(--pad);
+    }
+    #sec-experimentos .frame{
+      position:relative;
+      width:min(1100px, 86vw);
+      aspect-ratio: 16 / 10;
+      background:#0b0b0b;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      box-shadow:0 20px 60px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.04);
+      overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+    }
+    #sec-experimentos .frame img{
+      max-width:100%; max-height:100%;
+      width:auto; height:auto; object-fit:contain; display:block;
+      filter:contrast(1) saturate(1);
+      transition:opacity .25s ease;
+    }
+    #sec-experimentos .fade{ opacity:0; }
+
+    #sec-experimentos .nav{
+      position:fixed; top:50%; transform:translateY(-50%);
+      width:46px; height:46px; border-radius:50%;
+      display:grid; place-items:center; cursor:pointer; user-select:none;
+      background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.25);
+      backdrop-filter:blur(4px);
+      color:#fff; z-index:30;
+      transition:transform .12s ease, background .2s ease, opacity .2s ease;
+    }
+    #sec-experimentos .nav:hover{ background:rgba(0,0,0,.7); transform:translateY(-50%) scale(1.04); }
+    #sec-experimentos .nav:active{ transform:translateY(-50%) scale(.98); }
+    #sec-experimentos .prev{ left:18px; }
+    #sec-experimentos .next{ right:18px; }
+    #sec-experimentos .nav svg{ width:22px; height:22px; fill:none; stroke:var(--accent-x); stroke-width:2.5; }
+
+    #sec-experimentos .caption{
+      position:absolute; left:0; right:0; bottom:0;
+      background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.75));
+      color:#fff; padding:56px 18px 14px; font-size:.98rem;
+    }
+    #sec-experimentos .caption strong{ display:block; font-size:1.05rem; margin-bottom:4px; }
+    #sec-experimentos .caption a{ color:var(--accent-x); text-decoration:none; }
+    #sec-experimentos .caption a:hover{ text-decoration:underline; }
+
+    #sec-experimentos .pager{
+      position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+      font-size:.9rem; color:var(--muted); letter-spacing:.3px;
+      background:rgba(0,0,0,.35); padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(4px); z-index:25;
+    }
+
+    @media (max-width:720px){
+      #sec-experimentos .frame{ width:min(96vw, 740px); aspect-ratio: 16/11; border-radius:10px; }
+      #sec-experimentos .nav{ width:40px; height:40px; }
+      #sec-experimentos .nav svg{ width:18px; height:18px; }
+      #sec-experimentos .caption{ padding:44px 12px 12px; font-size:.9rem; }
+    }
+
+    /* ================= PROYECTOS ================= */
+    #sec-proyectos .proyectos {
+      width: min(1200px, 92vw);
+      margin: 4vmin auto 8vmin;
+      padding-top: 72px;
+    }
+
+    #sec-proyectos .proj-grid {
+      display: grid;
+      gap: clamp(14px, 2.5vmin, 24px);
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    @media (min-width: 640px)  { #sec-proyectos .proj-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 960px)  { #sec-proyectos .proj-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1200px) { #sec-proyectos .proj-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    #sec-proyectos .proj-card {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    #sec-proyectos .proj-card figure {
+      margin: 0;
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 2px solid #000;
+      box-shadow:
+        0 0 4px #111,
+        0 0 10px #222;
+    }
+
+    #sec-proyectos .proj-card figure::before {
+      content: "";
+      display: block;
+      aspect-ratio: 1 / 1;
+    }
+
+    #sec-proyectos .proj-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(1) contrast(1.05);
+      transform: scale(1.02);
+      opacity: 0.05;
+      transition: transform .35s ease, filter .35s ease, opacity .35s ease;
+    }
+
+    #sec-proyectos .proj-card:hover img,
+    #sec-proyectos .proj-card:focus-visible img {
+      transform: scale(1.06);
+      filter: grayscale(0.1) contrast(1.1);
+      opacity: 1;
+    }
+
+    #sec-proyectos .proj-card figcaption {
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity .3s ease;
+      text-shadow: 0 2px 10px #000, 0 0 12px #000;
+    }
+
+    #sec-proyectos .proj-card:hover figcaption,
+    #sec-proyectos .proj-card:focus-visible figcaption {
+      opacity: 1;
+    }
+
+    #sec-proyectos .proj-card:focus-visible {
+      outline: 2px dashed #fff;
+      outline-offset: 6px;
+      border-radius: 12px;
+    }
+
+    #sec-proyectos footer {
+      opacity: .6;
+      text-align: center;
+      padding: 24px 0;
+    }
+
+    /* ================= GALERÍA ================= */
+    #sec-galeria { --fg:#fff; --muted:rgba(255,255,255,.65); }
+
+    #sec-galeria .stage{
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 20px;
+      padding: 92px 20px 20px;
+      min-height: 70vh;
+      align-items: start;
+    }
+
+    @media (max-width: 980px){
+      #sec-galeria .stage{ grid-template-columns: 1fr; }
+      #sec-galeria .details{ order: 2; }
+    }
+
+    #sec-galeria .viewer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+      padding: 10px;
+    }
+
+    #sec-galeria .viewer img {
+      max-height: 68vh;
+      max-width: 100%;
+      width: 100%;
+      object-fit: contain;
+      aspect-ratio: 16/9;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.06);
+      background: #0b0b0b;
+    }
+
+    #sec-galeria .details{
+      position: sticky;
+      top: 84px;
+      align-self: start;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 16px 16px 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      box-shadow: 0 6px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    #sec-galeria .details h2{ margin:0 0 4px; font-size:1.1rem; letter-spacing:.2px; }
+    #sec-galeria .details .meta{ margin:0 0 12px; font-size:.9rem; color:var(--muted); }
+    #sec-galeria .details dl{
+      margin:8px 0 0;
+      display:grid;
+      grid-template-columns:120px 1fr;
+      gap:8px 12px;
+      align-items:start;
+      font-size:.95rem;
+    }
+    #sec-galeria .details dt{ color:var(--muted); }
+    #sec-galeria .details dd{ margin:0; }
+    #sec-galeria .details .sep{
+      height:1px;
+      background:rgba(255,255,255,.08);
+      margin:10px 0 12px;
+      border-radius:1px;
+    }
+
+    #sec-galeria .details a{
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    #sec-galeria .details a:hover{ text-decoration: underline; }
+
+    #sec-galeria .thumbnails {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      padding: 10px 20px 80px;
+      background: #000;
+    }
+
+    #sec-galeria .thumb-container {
+      position: relative;
+      cursor: pointer;
+      width: 108px;
+    }
+
+    #sec-galeria .thumb-container img {
+      width: 100%;
+      height: 60px;
+      border-radius: 6px;
+      object-fit: cover;
+      transition: opacity 0.25s, transform .15s ease, box-shadow .25s;
+      opacity: 0.55;
+      display: block;
+      border: 1px solid rgba(255,255,255,.08);
+      background: #0b0b0b;
+    }
+
+    #sec-galeria .thumb-container:hover img {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    #sec-galeria .thumb-container.active img{
+      opacity: 1;
+      outline: 2px solid var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    #sec-galeria .reflection {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    #sec-galeria .reflection img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleY(-1);
+      opacity: 0.35;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
+      filter: blur(.2px);
+    }
+
+    /* ================= BIO ================= */
+    #sec-bio .bio-container {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 12vh auto;
+      padding: 2rem 2.5rem;
+      background: rgba(200, 200, 200, 0.1);
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      text-align: center;
+    }
+
+    #sec-bio .bio-container p {
+      text-align: justify;
+      margin-bottom: 1.4em;
+    }
+
+    #sec-bio .volver {
+      margin-top: 1.6em;
+      display: inline-block;
+      padding: 10px 16px;
+      background: #fff;
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 6px;
+    }
+
+    #sec-bio .social {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+    }
+    #sec-bio .social a {
+      width: 38px;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: transform .15s ease, background .2s ease, opacity .2s ease;
+      color: #fff;
+      text-decoration: none;
+    }
+    #sec-bio .social a:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.2);
+    }
+    #sec-bio .social svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    #sec-bio canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    /* ================= INTEGRANTES ================= */
+    #sec-integrantes { --muted:rgba(255,255,255,.9); --panel-top:#141414; --panel-bot:#0d0d0d; --link:#4dd0e1; }
+
+    #sec-integrantes .spiro-wrap{ width:100%; display:flex; justify-content:center; padding:86px 0 6px; }
+    #sec-integrantes .spiro-box{ width:300px; height:300px; border:1px solid rgba(255,255,255,.08); border-radius:12px; background:#000;
+                box-shadow:0 6px 24px rgba(0,0,0,.5); position:relative; overflow:visible; }
+    #sec-integrantes canvas{ width:100%; height:100%; display:block; }
+
+    #sec-integrantes .grid{ display:grid; grid-template-columns:1fr 1fr; gap:28px; width:min(860px,92vw); margin:12px auto 60px; }
+    @media (max-width:780px){ #sec-integrantes .grid{ grid-template-columns:1fr; gap:22px; width:min(520px,92vw); } }
+
+    #sec-integrantes .member{
+      position:relative; border-radius:14px; padding:18px;
+      background:linear-gradient(180deg,var(--panel-top),var(--panel-bot));
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:0 10px 24px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+      overflow:hidden; max-width:460px; margin:0 auto;
+    }
+    #sec-integrantes .member::before{
+      content:""; position:absolute; inset:0 0 auto 0; height:40%;
+      background:radial-gradient(120% 60% at 50% -10%, rgba(255,255,255,.06), transparent 60%);
+      pointer-events:none;
+    }
+
+    #sec-integrantes .photo{
+      position:relative; border-radius:12px; overflow:hidden; margin:0 auto 10px; width:100%; max-width:220px;
+      border:1px solid rgba(255,255,255,.08); box-shadow:0 0 10px #0008;
+      cursor:pointer;
+    }
+    #sec-integrantes .photo img{ display:block; width:100%; height:auto; object-fit:cover; }
+
+    #sec-integrantes .photo::after{
+      content:attr(data-hint); position:absolute; left:50%; bottom:8px; transform:translateX(-50%);
+      font-size:.75rem; color:rgba(255,255,255,.75); background:rgba(0,0,0,.45);
+      padding:4px 8px; border-radius:8px; opacity:.0; transition:opacity .25s;
+      pointer-events:none; white-space:nowrap;
+    }
+    #sec-integrantes .photo:hover::after{ opacity:1; }
+
+    #sec-integrantes .member h2{ margin:8px 0 6px; font-size:1.22em; color:var(--link); }
+
+    #sec-integrantes .bio{
+      color:var(--muted); line-height:1.6; font-size:.98em; text-align:justify; text-align-last:left;
+      max-height:0; opacity:.0; overflow:hidden; transition:max-height .45s ease, opacity .35s ease;
+    }
+    #sec-integrantes .member.open .bio{ max-height:240px; opacity:1; }
   </style>
 </head>
-<body>
+<body class="en-inicio">
 
-  <!-- LOGO -->
+  <!-- LOGO (fijo en todas las secciones) -->
+  <div class="topfade"></div>
   <header class="brand" aria-label="Marca">
-    <a class="logo-box" href="#">
+    <a class="logo-box" href="#inicio">
       <img src="logo.png" alt="Logotipo" onerror="this.style.display='none'">
     </a>
     <span>[Hz]</span>
+    <a class="inicio" href="#inicio" data-i18n="inicio">Inicio</a>
   </header>
 
-  <!-- IDIOMAS -->
+  <!-- IDIOMAS (fijo en todas las secciones) -->
   <nav class="lang" id="lang" aria-label="Idioma">
     <button data-lang="es" title="Español">
       <svg viewBox="0 0 9 6" preserveAspectRatio="none"><rect width="9" height="6" fill="#74ACDF"/><rect y="2" width="9" height="2" fill="#fff"/><circle cx="4.5" cy="3" r=".6" fill="#F6B40E"/></svg>
@@ -208,8 +634,8 @@
     </button>
   </nav>
 
-  <!-- Hero -->
-  <main>
+  <!-- ================= INICIO ================= -->
+  <main class="sec" id="sec-inicio">
     <section class="wrap">
       <div class="stack">
         <div class="frame" id="frame" role="button" tabindex="0" title="Click para cambiar">
@@ -219,85 +645,651 @@
         </div>
 
         <nav class="menu" aria-label="Secciones">
-          <a href="index-experimentos.html" id="m1">Experimentos</a>
-          <a href="index-proyectos.html" id="m2">Proyectos</a>
-          <a href="index-galeria.html" id="m3">Galería</a>
-          <a href="index-bio.html" id="m4">Bio</a>
-          <a href="index-integrantes.html" id="m5">Integrantes</a>
+          <a href="#experimentos" data-i18n="m1">Experimentos</a>
+          <a href="#proyectos" data-i18n="m2">Proyectos</a>
+          <a href="#galeria" data-i18n="m3">Galería</a>
+          <a href="#bio" data-i18n="m4">Bio</a>
+          <a href="#integrantes" data-i18n="m5">Integrantes</a>
         </nav>
       </div>
     </section>
   </main>
 
+  <!-- ================= EXPERIMENTOS ================= -->
+  <section class="sec" id="sec-experimentos">
+    <div class="stage">
+      <div class="frame" id="x-frame">
+        <img id="x-hero" class="fade" src="" alt="Experimento" />
+        <div class="caption" id="x-caption"></div>
+      </div>
+    </div>
+
+    <button class="nav prev" id="x-prev" aria-label="Anterior" title="Anterior (←)">
+      <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button class="nav next" id="x-next" aria-label="Siguiente" title="Siguiente (→)">
+      <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+
+    <div class="pager" id="x-pager">1 / 1</div>
+  </section>
+
+  <!-- ================= PROYECTOS ================= -->
+  <section class="sec" id="sec-proyectos">
+    <main class="proyectos">
+      <div class="proj-grid">
+        <a class="proj-card" href="#proyectos">
+          <figure><img src="assets/p1.png" alt="Space Beat"><figcaption>Reverso</figcaption></figure>
+        </a>
+        <a class="proj-card" href="#proyectos">
+          <figure><img src="assets/p1.png" alt="Metachronal"><figcaption>Visiones Sonoras de la Urbe</figcaption></figure>
+        </a>
+        <a class="proj-card" href="#proyectos">
+          <figure><img src="assets/p1.png" alt="Phase"><figcaption>Black Box</figcaption></figure>
+        </a>
+        <a class="proj-card" href="#proyectos">
+          <figure><img src="assets/p1.png" alt="Volume"><figcaption>Liminal</figcaption></figure>
+        </a>
+        <a class="proj-card" href="#proyectos">
+          <figure><img src="assets/p1.png" alt="City Lights"><figcaption>Interferencias</figcaption></figure>
+        </a>
+        <a class="proj-card" href="#proyectos">
+          <figure><img src="assets/p1.png" alt="Mesh"><figcaption>Bön</figcaption></figure>
+        </a>
+        <a class="proj-card" href="#proyectos">
+          <figure><img src="assets/p1.png" alt="Field"><figcaption>Frecuencias Nómades</figcaption></figure>
+        </a>
+        <a class="proj-card" href="#proyectos">
+          <figure><img src="assets/p1.png" alt="Grid Room"><figcaption>Biósfera</figcaption></figure>
+        </a>
+      </div>
+    </main>
+    <footer>© 2025</footer>
+  </section>
+
+  <!-- ================= GALERÍA ================= -->
+  <section class="sec" id="sec-galeria">
+    <section class="stage">
+      <div class="viewer">
+        <img id="g-main" src="gallery/foto1.png" alt="Imagen principal" />
+      </div>
+      <aside class="details" id="g-details" aria-live="polite"></aside>
+    </section>
+    <div class="thumbnails" id="g-thumbs"></div>
+  </section>
+
+  <!-- ================= BIO ================= -->
+  <section class="sec" id="sec-bio">
+    <div class="bio-container">
+      <h1 data-i18n="bioTitulo">Biografía</h1>
+
+      <p data-i18n="bioTexto">
+        Nuestro principio es ser auténticos entre lo que pensamos, sentimos y hacemos. Las técnicas o recursos tecnológicos no son lo primordial, sino nuestro pensamiento sobre el arte en relación con lo que somos.
+      </p>
+      <p data-i18n="bioFestivales">Festival Internacional de Video mapping MAPP_MTL 2023, Canadá.
+        Festival Punto y Raya Edición 2023, Portugal
+        Festival Internacional de Video mapping MAPP_MTL 2022, Canadá.
+        Festival Internacional de Video mapping Curitiba, 2021, Brasil
+        Festival Internacional de Video mapping 1Minute Festival 2021, Tokyo Japón.
+        Premio Itaú Banco de Artes Visuales 2021, Buenos Aires, Argentina.
+        Festival Punto y Raya Edición 2021, Viena, Austria.
+        Festival Internacional de Video mapping MAPP_JP 2021, Canadá.
+        Premio Itaú Banco de Artes Visuales 2019, Buenos Aires, Argentina.</p>
+
+      <a class="volver" href="#inicio" data-i18n="volver">Volver al inicio</a>
+
+      <div class="social" aria-label="Redes sociales">
+        <a href="https://www.instagram.com/hz.xyz/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0-5c2.7 0 3.04.01 4.11.06 1.06.05 1.78.22 2.41.47.65.25 1.2.59 1.74 1.13.54.54.88 1.09 1.13 1.74.25.63.42 1.35.47 2.41.05 1.07.06 1.41.06 4.11s-.01 3.04-.06 4.11c-.05 1.06-.22 1.78-.47 2.41a4.64 4.64 0 0 1-1.13 1.74 4.64 4.64 0 0 1-1.74 1.13c-.63.25-1.35.42-2.41.47-1.07.05-1.41.06-4.11.06s-3.04-.01-4.11-.06c-1.06-.05-1.78-.22-2.41-.47a4.64 4.64 0 0 1-1.74-1.13 4.64 4.64 0 0 1-1.13-1.74c-.25-.63-.42-1.35-.47-2.41C2.01 15.04 2 14.7 2 12s.01-3.04.06-4.11c.05-1.06.22-1.78.47-2.41.25-.65.59-1.2 1.13-1.74.54-.54 1.09-.88 1.74-1.13.63-.25 1.35-.42 2.41-.47C8.96 2.01 9.3 2 12 2Zm0 2c-2.65 0-2.97.01-4.02.06-.97.05-1.5.21-1.85.35-.47.18-.8.39-1.15.74-.35.35-.56.68-.74 1.15-.14.35-.3.88-.35 1.85C3.84 10.99 3.83 11.31 3.83 14s.01 3.01.06 4.06c.05.97.21 1.5.35 1.85.18.47.39.8.74 1.15.35.35.68.56 1.15.74.35.14.88.3 1.85.35 1.05.05 1.37.06 4.06.06s3.01-.01 4.06-.06c.97-.05 1.5-.21 1.85-.35.47-.18.8-.39 1.15-.74.35-.35.56-.68.74-1.15.14-.35.3-.88.35-1.85.05-1.05.06-1.37.06-4.06s-.01-3.01-.06-4.06c-.05-.97-.21-1.5-.35-1.85-.18-.47-.39-.8-.74-1.15a2.92 2.92 0 0 0-1.15-.74c-.35-.14-.88-.3-1.85-.35C14.99 4.01 14.67 4 12 4Zm5.25.9a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z"/>
+          </svg>
+        </a>
+        <a href="https://vimeo.com/giovannizapata" target="_blank" rel="noopener noreferrer" aria-label="Vimeo">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M22.4 7.3c-.1 2-1.5 4.7-4.2 8.2-2.8 3.6-5.1 5.3-7 5.3-1.2 0-2.2-1.1-3-3.2l-1.6-6.1c-.6-2.1-1.2-3.2-1.9-3.2-.1 0-.6.3-1.5.9L2 8.1c1-.9 2-1.8 3-2.7 1.4-1.2 2.4-1.8 3.1-1.8 1.6-.2 2.6 1 3 3.6.4 2.8.7 4.5.9 5.1.5 2.3 1 3.4 1.7 3.4.5 0 1.3-.8 2.4-2.3s1.6-2.6 1.7-3.4c.2-1.3-.4-1.9-1.7-1.9-.6 0-1.2.1-1.8.4.6-2 2.1-2.9 4.5-2.9 3.3 0 3.9 1.8 3.8 3.9Z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <canvas id="b-canvas"></canvas>
+  </section>
+
+  <!-- ================= INTEGRANTES ================= -->
+  <section class="sec" id="sec-integrantes">
+    <div class="spiro-wrap">
+      <div class="spiro-box"><canvas id="spiro"></canvas></div>
+    </div>
+
+    <section class="grid">
+      <article class="member" data-member>
+        <figure class="photo" data-photo data-hint="Pasar sobre la imagen">
+          <img src="gallery/andres.png" alt="Andrés García" />
+        </figure>
+        <h2>Andrés García</h2>
+        <p class="bio" data-i18n="andres">
+          (21-07-1988) es músico y productor. Desde 2007 desarrolla una obra experimental con grabaciones de campo,
+          cintas, cuerdas y procesamiento digital. Cofundador de CAS Records (2015), ha editado 31 discos y colaborado
+          con artistas de diversas disciplinas. Su obra fue presentada en América, Europa y Asia.
+        </p>
+      </article>
+
+      <article class="member" data-member>
+        <figure class="photo" data-photo data-hint="Pasar sobre la imagen">
+          <img src="gallery/giovanni.png" alt="Giovanni Zapata" />
+        </figure>
+        <h2>Giovanni Zapata</h2>
+        <p class="bio" data-i18n="giovanni">
+          (01-06-1978) es Licenciado en Artes Multimediales y posee un Posgrado en Lenguajes Artísticos Contemporáneos.
+          Su obra ha sido exhibida y premiada en festivales internacionales, con presencia en ferias de arte en Dubái,
+          Nueva York, Bélgica y Argentina.
+        </p>
+      </article>
+    </section>
+  </section>
+
   <script>
-    const frame = document.getElementById('frame');
-    const cols = [...document.querySelectorAll('.col')];
+  /* =====================================================================
+     TEXTOS POR IDIOMA
+     ===================================================================== */
+  const textos = {
+    es: {
+      inicio: 'Inicio', m1: 'Experimentos', m2: 'Proyectos', m3: 'Galería', m4: 'Bio', m5: 'Integrantes',
+      click: 'Click para cambiar',
+      bioTitulo: 'Biografía',
+      bioTexto: 'Nuestro principio es ser auténticos entre lo que pensamos, sentimos y hacemos. Las técnicas o recursos tecnológicos no son lo primordial, sino nuestro pensamiento sobre el arte en relación con lo que somos.',
+      bioFestivales: 'Festival Internacional de Video mapping MAPP_MTL 2023, Canadá. Festival Punto y Raya Edición 2023, Portugal Festival Internacional de Video mapping MAPP_MTL 2022, Canadá. Festival Internacional de Video mapping Curitiba, 2021, Brasil Festival Internacional de Video mapping 1Minute Festival 2021, Tokyo Japón. Premio Itaú Banco de Artes Visuales 2021, Buenos Aires, Argentina. Festival Punto y Raya Edición 2021, Viena, Austria. Festival Internacional de Video mapping MAPP_JP 2021, Canadá. Premio Itaú Banco de Artes Visuales 2019, Buenos Aires, Argentina.',
+      volver: 'Volver al inicio',
+      hint: 'Pasar sobre la imagen',
+      andres: '(21-07-1988) es músico y productor. Desde 2007 desarrolla una obra experimental con grabaciones de campo, cintas, cuerdas y procesamiento digital. Cofundador de CAS Records (2015), ha editado 31 discos y colaborado con artistas de diversas disciplinas. Su obra fue presentada en América, Europa y Asia.',
+      giovanni: '(01-06-1978) es Licenciado en Artes Multimediales y posee un Posgrado en Lenguajes Artísticos Contemporáneos. Su obra ha sido exhibida y premiada en festivales internacionales, con presencia en ferias de arte en Dubái, Nueva York, Bélgica y Argentina.',
+      coleccion: 'Colección', codigo: 'Código', autor: 'Autor', anio: 'Año', tecnica: 'Técnica', dimensiones: 'Dimensiones',
+      duracion: 'Duración', descripcion: 'Descripción', video: 'Video', verVimeo: 'Ver en Vimeo', obra: 'Obra'
+    },
+    en: {
+      inicio: 'Home', m1: 'Experiments', m2: 'Projects', m3: 'Gallery', m4: 'Bio', m5: 'Members',
+      click: 'Click to change',
+      bioTitulo: 'Biography',
+      bioTexto: 'Our principle is to be authentic across what we think, feel and do. Techniques and technological resources are not what matters most; what matters is our thinking about art in relation to who we are.',
+      bioFestivales: 'MAPP_MTL International Video Mapping Festival 2023, Canada. Punto y Raya Festival 2023 Edition, Portugal. MAPP_MTL International Video Mapping Festival 2022, Canada. Curitiba International Video Mapping Festival 2021, Brazil. 1Minute International Video Mapping Festival 2021, Tokyo, Japan. Itaú Bank Visual Arts Award 2021, Buenos Aires, Argentina. Punto y Raya Festival 2021 Edition, Vienna, Austria. MAPP_JP International Video Mapping Festival 2021, Canada. Itaú Bank Visual Arts Award 2019, Buenos Aires, Argentina.',
+      volver: 'Back to home',
+      hint: 'Hover over the image',
+      andres: '(21-07-1988) is a musician and producer. Since 2007 he has developed an experimental body of work with field recordings, tapes, strings and digital processing. Co-founder of CAS Records (2015), he has released 31 records and collaborated with artists from diverse disciplines. His work has been presented in the Americas, Europe and Asia.',
+      giovanni: '(01-06-1978) holds a degree in Multimedia Arts and a postgraduate degree in Contemporary Artistic Languages. His work has been exhibited and awarded at international festivals, with presence at art fairs in Dubai, New York, Belgium and Argentina.',
+      coleccion: 'Collection', codigo: 'Code', autor: 'Author', anio: 'Year', tecnica: 'Technique', dimensiones: 'Dimensions',
+      duracion: 'Duration', descripcion: 'Description', video: 'Video', verVimeo: 'Watch on Vimeo', obra: 'Work'
+    },
+    fr: {
+      inicio: 'Accueil', m1: 'Expériences', m2: 'Projets', m3: 'Galerie', m4: 'Bio', m5: 'Membres',
+      click: 'Cliquez pour changer',
+      bioTitulo: 'Biographie',
+      bioTexto: 'Notre principe est d’être authentiques entre ce que nous pensons, ressentons et faisons. Les techniques ou les ressources technologiques ne sont pas l’essentiel ; l’essentiel est notre pensée sur l’art en relation avec ce que nous sommes.',
+      bioFestivales: 'Festival international de vidéo mapping MAPP_MTL 2023, Canada. Festival Punto y Raya, édition 2023, Portugal. Festival international de vidéo mapping MAPP_MTL 2022, Canada. Festival international de vidéo mapping de Curitiba 2021, Brésil. Festival international de vidéo mapping 1Minute Festival 2021, Tokyo, Japon. Prix Itaú Banco des arts visuels 2021, Buenos Aires, Argentine. Festival Punto y Raya, édition 2021, Vienne, Autriche. Festival international de vidéo mapping MAPP_JP 2021, Canada. Prix Itaú Banco des arts visuels 2019, Buenos Aires, Argentine.',
+      volver: 'Retour à l’accueil',
+      hint: 'Survolez l’image',
+      andres: '(21-07-1988) est musicien et producteur. Depuis 2007, il développe une œuvre expérimentale à partir d’enregistrements de terrain, de bandes, de cordes et de traitement numérique. Cofondateur de CAS Records (2015), il a publié 31 disques et collaboré avec des artistes de diverses disciplines. Son œuvre a été présentée en Amérique, en Europe et en Asie.',
+      giovanni: '(01-06-1978) est diplômé en arts multimédias et titulaire d’un diplôme de troisième cycle en langages artistiques contemporains. Son œuvre a été exposée et primée dans des festivals internationaux, avec une présence dans des foires d’art à Dubaï, New York, en Belgique et en Argentine.',
+      coleccion: 'Collection', codigo: 'Code', autor: 'Auteur', anio: 'Année', tecnica: 'Technique', dimensiones: 'Dimensions',
+      duracion: 'Durée', descripcion: 'Description', video: 'Vidéo', verVimeo: 'Voir sur Vimeo', obra: 'Œuvre'
+    },
+    de: {
+      inicio: 'Start', m1: 'Experimente', m2: 'Projekte', m3: 'Galerie', m4: 'Bio', m5: 'Mitglieder',
+      click: 'Klicken zum Ändern',
+      bioTitulo: 'Biografie',
+      bioTexto: 'Unser Grundsatz ist, authentisch zu sein in dem, was wir denken, fühlen und tun. Techniken und technologische Mittel stehen nicht im Vordergrund, sondern unser Nachdenken über Kunst im Verhältnis zu dem, was wir sind.',
+      bioFestivales: 'Internationales Video-Mapping-Festival MAPP_MTL 2023, Kanada. Festival Punto y Raya, Ausgabe 2023, Portugal. Internationales Video-Mapping-Festival MAPP_MTL 2022, Kanada. Internationales Video-Mapping-Festival Curitiba 2021, Brasilien. Internationales Video-Mapping-Festival 1Minute Festival 2021, Tokio, Japan. Itaú-Banco-Preis für Bildende Kunst 2021, Buenos Aires, Argentinien. Festival Punto y Raya, Ausgabe 2021, Wien, Österreich. Internationales Video-Mapping-Festival MAPP_JP 2021, Kanada. Itaú-Banco-Preis für Bildende Kunst 2019, Buenos Aires, Argentinien.',
+      volver: 'Zurück zum Start',
+      hint: 'Mit der Maus über das Bild fahren',
+      andres: '(21-07-1988) ist Musiker und Produzent. Seit 2007 entwickelt er ein experimentelles Werk mit Feldaufnahmen, Tonbändern, Saiten und digitaler Bearbeitung. Als Mitgründer von CAS Records (2015) hat er 31 Alben veröffentlicht und mit Künstlerinnen und Künstlern verschiedener Disziplinen zusammengearbeitet. Sein Werk wurde in Amerika, Europa und Asien gezeigt.',
+      giovanni: '(01-06-1978) hat einen Abschluss in Multimedia-Kunst und ein Aufbaustudium in zeitgenössischen künstlerischen Sprachen. Sein Werk wurde auf internationalen Festivals gezeigt und ausgezeichnet und war auf Kunstmessen in Dubai, New York, Belgien und Argentinien vertreten.',
+      coleccion: 'Sammlung', codigo: 'Code', autor: 'Autor', anio: 'Jahr', tecnica: 'Technik', dimensiones: 'Maße',
+      duracion: 'Dauer', descripcion: 'Beschreibung', video: 'Video', verVimeo: 'Auf Vimeo ansehen', obra: 'Werk'
+    }
+  };
 
-    function randomProportions(n, minFrac = 0.18) {
-      const rest = 1 - n * minFrac;
-      const cuts = Array.from({ length: n - 1 }, () => Math.random()).sort((a, b) => a - b);
-      const parts = [];
-      let prev = 0;
-      for (let i = 0; i < cuts.length; i++) {
-        parts.push(cuts[i] - prev);
-        prev = cuts[i];
-      }
-      parts.push(1 - prev);
-      return parts.map(p => p * rest + minFrac);
+  // Frases que aparecen dentro de los datos de Experimentos y Galería
+  const frases = {
+    '2025 · PROYECCIÓN SOBRE AGUA':          { en: '2025 · PROJECTION ON WATER', fr: '2025 · PROJECTION SUR L’EAU', de: '2025 · PROJEKTION AUF WASSER' },
+    'Proyección Mapping · entorno generativo':{ en: 'Projection mapping · generative environment', fr: 'Projection mapping · environnement génératif', de: 'Projection Mapping · generative Umgebung' },
+    'Audio + pasos · prototipo':             { en: 'Audio + footsteps · prototype', fr: 'Audio + pas · prototype', de: 'Audio + Schritte · Prototyp' },
+    'Láser & Máquina de Humo':               { en: 'Laser & Smoke Machine', fr: 'Laser & Machine à fumée', de: 'Laser & Nebelmaschine' },
+    'Instalación':                           { en: 'Installation', fr: 'Installation', de: 'Installation' },
+    'Mapping 3D · Impresión 3D':             { en: '3D Mapping · 3D Printing', fr: 'Mapping 3D · Impression 3D', de: '3D-Mapping · 3D-Druck' },
+    'Piso LED reactivo':                     { en: 'Reactive LED floor', fr: 'Sol LED réactif', de: 'Reaktiver LED-Boden' },
+    'Proyección Láser':                      { en: 'Laser Projection', fr: 'Projection laser', de: 'Laserprojektion' },
+    'Entorno generativo':                    { en: 'Generative environment', fr: 'Environnement génératif', de: 'Generative Umgebung' },
+    'Tinta Fluorescente':                    { en: 'Fluorescent Ink', fr: 'Encre fluorescente', de: 'Fluoreszierende Tinte' },
+    'LED interactivo + Audio':               { en: 'Interactive LED + Audio', fr: 'LED interactive + Audio', de: 'Interaktive LED + Audio' },
+    'Instalación Audiovisual':               { en: 'Audiovisual Installation', fr: 'Installation audiovisuelle', de: 'Audiovisuelle Installation' },
+    'Instalación luminosa reactiva al movimiento.': { en: 'Light installation that reacts to movement.', fr: 'Installation lumineuse réactive au mouvement.', de: 'Lichtinstallation, die auf Bewegung reagiert.' },
+    'Artista 1':                             { en: 'Artist 1', fr: 'Artiste 1', de: 'Künstler 1' }
+  };
+
+  let idioma = 'es';
+  const T = k => (textos[idioma] && textos[idioma][k]) || textos.es[k] || k;
+  const F = s => (idioma !== 'es' && frases[s] && frases[s][idioma]) || s;
+
+  function escapeHtml(str){
+    return String(str || '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+      .replaceAll('"','&quot;').replaceAll("'",'&#39;');
+  }
+
+  /* =====================================================================
+     INICIO — columnas Fibonacci
+     ===================================================================== */
+  const frame = document.getElementById('frame');
+  const cols = [...frame.querySelectorAll('.col')];
+
+  const fib = [1, 1, 2, 3, 5, 8, 13, 21];
+  let paso = 0;
+
+  function randomize() {
+    const trio = fib.slice(paso, paso + 3);
+    paso = (paso + 1) % (fib.length - 2);
+    for (let i = trio.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [trio[i], trio[j]] = [trio[j], trio[i]];
+    }
+    const total = trio[0] + trio[1] + trio[2];
+    const widths = trio.map(v => v / total);
+    cols.forEach((el, i) => el.style.width = (widths[i] * 100).toFixed(2) + '%');
+    if (Math.random() < 0.5) {
+      [...cols].reverse().forEach(c => frame.appendChild(c));
+    }
+  }
+
+  frame.addEventListener('click', randomize);
+  frame.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      randomize();
+    }
+  });
+  randomize();
+
+  /* =====================================================================
+     EXPERIMENTOS
+     ===================================================================== */
+  const Exp = (() => {
+    const items = [
+      { src: 'experimentos/exp01.jpg', title: 'Numen', meta: '2025 · PROYECCIÓN SOBRE AGUA', link:'https://instagram.com/tu_cuenta' },
+      { src: 'experimentos/exp02.jpg', title: 'Estupor', meta: 'Proyección Mapping · entorno generativo', link:'' },
+      { src: 'experimentos/exp03.png', title: 'Piso LED reactivo', meta: 'Audio + pasos · prototipo', link:'' },
+      { src: 'experimentos/exp04.jpg', title: 'Proyección Láser', meta: 'Láser & Máquina de Humo', link:'' },
+      { src: 'experimentos/exp05.png', title: 'Entorno generativo', meta: 'Instalación', link:'' },
+      { src: 'experimentos/exp06.jpg', title: 'Numen', meta: '2025 · PROYECCIÓN SOBRE AGUA', link:'https://instagram.com/tu_cuenta' },
+      { src: 'experimentos/exp07.png', title: 'Estupor', meta: 'Mapping 3D · Impresión 3D', link:'' },
+      { src: 'experimentos/exp08.png', title: 'Piso LED reactivo', meta: 'Audio + pasos · prototipo', link:'' },
+      { src: 'experimentos/exp09.jpg', title: 'Proyección Láser', meta: 'Láser & Máquina de Humo', link:'' },
+      { src: 'experimentos/exp10.png', title: 'Entorno generativo', meta: 'Instalación', link:'' },
+      { src: 'experimentos/exp11.png', title: 'Tinta Fluorescente', meta: 'Instalación', link:'' },
+      { src: 'experimentos/exp12.jpg', title: 'Tinta Fluorescente', meta: 'Instalación', link:'' },
+    ];
+
+    const hero    = document.getElementById('x-hero');
+    const caption = document.getElementById('x-caption');
+    const pager   = document.getElementById('x-pager');
+    const xframe  = document.getElementById('x-frame');
+    let idx = 0, iniciado = false;
+
+    // prueba mayúsculas/minúsculas, jpg/png, y la foto suelta fuera de la carpeta
+    function variantes(src){
+      const lista = [src];
+      const nombre = src.split('/').pop();
+      const bases = [src.replace(/\.[^.\/]+$/, ''), nombre.replace(/\.[^.]+$/, '')];
+      for (const base of bases)
+        for (const ext of ['.jpg','.JPG','.png','.PNG','.jpeg','.JPEG'])
+          if (!lista.includes(base + ext)) lista.push(base + ext);
+      return lista;
     }
 
-    // Fibonacci: cada clic avanza un paso (1·1·2 → 1·2·3 → 2·3·5 → 3·5·8 → 5·8·13 …) y vuelve a empezar
-    const fib = [1, 1, 2, 3, 5, 8, 13, 21];
-    let paso = 0;
-
-    function randomize() {
-      const trio = fib.slice(paso, paso + 3);
-      paso = (paso + 1) % (fib.length - 2);
-      for (let i = trio.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [trio[i], trio[j]] = [trio[j], trio[i]];
-      }
-      const total = trio[0] + trio[1] + trio[2];
-      const widths = trio.map(v => v / total);
-      cols.forEach((el, i) => el.style.width = (widths[i] * 100).toFixed(2) + '%');
-      if (Math.random() < 0.5) {
-        [...cols].reverse().forEach(c => frame.appendChild(c));
-      }
+    function cargar(item, alListo){
+      const opciones = variantes(item.src);
+      let n = 0;
+      const img = new Image();
+      img.onerror = () => { n++; if (n < opciones.length) img.src = opciones[n]; };
+      img.onload  = () => { item.src = opciones[n]; alListo && alListo(img); };
+      img.src = opciones[0];
     }
 
-    // --- Idiomas ---
-    const textos = {
-      es: { m1: 'Experimentos', m2: 'Proyectos', m3: 'Galería',  m4: 'Bio', m5: 'Integrantes', click: 'Click para cambiar',   secciones: 'Secciones', idioma: 'Idioma' },
-      en: { m1: 'Experiments',  m2: 'Projects',  m3: 'Gallery',  m4: 'Bio', m5: 'Members',     click: 'Click to change',      secciones: 'Sections',  idioma: 'Language' },
-      fr: { m1: 'Expériences',  m2: 'Projets',   m3: 'Galerie',  m4: 'Bio', m5: 'Membres',     click: 'Cliquez pour changer', secciones: 'Sections',  idioma: 'Langue' },
-      de: { m1: 'Experimente',  m2: 'Projekte',  m3: 'Galerie',  m4: 'Bio', m5: 'Mitglieder',  click: 'Klicken zum Ändern',   secciones: 'Bereiche',  idioma: 'Sprache' }
+    function setCaption(item){
+      const link = item.link ? `<a href="${item.link}" target="_blank" rel="noopener"></a>` : '';
+      caption.innerHTML = `<strong>${escapeHtml(F(item.title))}</strong>${escapeHtml(F(item.meta))} ${link}`;
+    }
+
+    function show(i, {instant=false} = {}){
+      idx = (i + items.length) % items.length;
+      const item = items[idx];
+      hero.classList.add('fade');
+      cargar(item, img => {
+        if (items[idx] !== item) return;
+        hero.src = img.src;
+        hero.alt = item.title || 'Experimento';
+        setCaption(item);
+        pager.textContent = `${idx+1} / ${items.length}`;
+        if (instant) hero.classList.remove('fade');
+        else requestAnimationFrame(() => hero.classList.remove('fade'));
+        cargar(items[(idx+1)%items.length]);
+        cargar(items[(idx-1+items.length)%items.length]);
+      });
+    }
+
+    const next = () => show(idx+1);
+    const prev = () => show(idx-1);
+
+    document.getElementById('x-next').addEventListener('click', next);
+    document.getElementById('x-prev').addEventListener('click', prev);
+    document.addEventListener('keydown', (e) => {
+      if (!document.body.classList.contains('en-experimentos')) return;
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft')  prev();
+    });
+
+    let sx = 0, dx = 0;
+    xframe.addEventListener('touchstart', e => { sx = e.touches[0].clientX; });
+    xframe.addEventListener('touchmove',  e => { dx = e.touches[0].clientX - sx; });
+    xframe.addEventListener('touchend',   () => { if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); } dx = 0; });
+
+    return {
+      abrir(){ if (!iniciado){ iniciado = true; show(0, {instant:true}); } },
+      idioma(){ if (iniciado) setCaption(items[idx]); }
+    };
+  })();
+
+  /* =====================================================================
+     GALERÍA
+     ===================================================================== */
+  const Gal = (() => {
+    const workData = {
+      1:{ titulo:"Obra 1", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      2:{ titulo:"Obra 2", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      3:{ titulo:"Obra 3", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      4:{ titulo:"Obra 4", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      5:{ titulo:"Obra 5", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"Instalación Audiovisual", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      6:{ titulo:"Obra 6", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      7:{ titulo:"Obra 7", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      8:{ titulo:"Obra 8", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      9:{ titulo:"Obra 9", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
+      10:{ titulo:"Obra 10", coleccion:"[Hz]", codigo:"HZ-001", autor:"Artista 1", anio:"2025",
+          tecnica:"LED interactivo + Audio", dimensiones:"1920×1080 px", duracion:"Loop 2’30”",
+          descripcion:"Instalación luminosa reactiva al movimiento.", video:"https://vimeo.com/111111111" },
     };
 
-    function setLang(l) {
-      const t = textos[l] || textos.es;
-      document.documentElement.lang = l;
-      ['m1', 'm2', 'm3', 'm4', 'm5'].forEach(id => document.getElementById(id).textContent = t[id]);
-      frame.title = t.click;
-      document.querySelector('.menu').setAttribute('aria-label', t.secciones);
-      document.getElementById('lang').setAttribute('aria-label', t.idioma);
-      document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === l));
-      try { localStorage.setItem('hz-lang', l); } catch (e) {}
+    const mainImage  = document.getElementById('g-main');
+    const details    = document.getElementById('g-details');
+    const thumbsWrap = document.getElementById('g-thumbs');
+    let actual = 1;
+
+    for (let i = 1; i <= 10; i++) {
+      const c = document.createElement('div');
+      c.className = 'thumb-container';
+      c.dataset.index = i;
+      c.innerHTML = `<img src="gallery/thumb${i}.png" alt="Foto ${i}" />
+        <div class="reflection"><img src="gallery/thumb${i}.png" alt="" /></div>`;
+      c.querySelector('img').addEventListener('error', () => c.remove()); // si la foto no está subida, no deja un hueco
+      c.addEventListener('click', () => showWork(i));
+      thumbsWrap.appendChild(c);
     }
 
-    document.querySelectorAll('#lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+    function renderDetails(data){
+      const titulo = (data.titulo || 'Obra').replace(/^Obra/, T('obra'));
+      const colec = data.coleccion ? `${T('coleccion')}: ${data.coleccion}` : '';
+      const cod   = data.codigo ? ` · ${T('codigo')}: ${data.codigo}` : '';
+      const video = data.video ? `<dt>${T('video')}</dt><dd><a href="${escapeHtml(data.video)}" target="_blank" rel="noopener">${T('verVimeo')}</a></dd>` : '';
+      details.innerHTML = `
+        <h2>${escapeHtml(titulo)}</h2>
+        <p class="meta">${escapeHtml(colec + cod)}</p>
+        <div class="sep"></div>
+        <dl>
+          <dt>${T('autor')}</dt><dd>${escapeHtml(F(data.autor) || '—')}</dd>
+          <dt>${T('anio')}</dt><dd>${escapeHtml(data.anio || '—')}</dd>
+          <dt>${T('tecnica')}</dt><dd>${escapeHtml(F(data.tecnica) || '—')}</dd>
+          <dt>${T('dimensiones')}</dt><dd>${escapeHtml(data.dimensiones || '—')}</dd>
+          <dt>${T('duracion')}</dt><dd>${escapeHtml(data.duracion || '—')}</dd>
+          <dt>${T('descripcion')}</dt><dd>${escapeHtml(F(data.descripcion) || '—')}</dd>
+          ${video}
+        </dl>
+      `;
+    }
 
-    let guardado = 'es';
-    try { guardado = localStorage.getItem('hz-lang') || 'es'; } catch (e) {}
-    setLang(guardado);
-
-    window.addEventListener('DOMContentLoaded', randomize);
-    frame.addEventListener('click', randomize);
-    frame.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        randomize();
+    function showWork(i){
+      actual = i;
+      mainImage.src = `gallery/foto${i}.png`;
+      mainImage.alt = `${T('obra')} ${i}`;
+      renderDetails(workData[i] || {});
+      for (const el of thumbsWrap.querySelectorAll('.thumb-container')){
+        el.classList.toggle('active', Number(el.dataset.index) === i);
       }
+    }
+
+    showWork(1);
+    return { idioma(){ renderDetails(workData[actual] || {}); } };
+  })();
+
+  /* =====================================================================
+     BIO — partículas
+     ===================================================================== */
+  const Bio = (() => {
+    const canvas = document.getElementById('b-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    const numParticles = 120;
+    const maxDist = 120;
+    let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+    let corriendo = false;
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     });
+
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+      }
+      update() {
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 150) {
+          this.vx -= dx * 0.0006;
+          this.vy -= dy * 0.0006;
+        }
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 1.3, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+
+    function animate() {
+      if (!document.body.classList.contains('en-bio')) { corriendo = false; return; }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.save();
+      ctx.beginPath();
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const radius = Math.min(canvas.width, canvas.height) * 0.45;
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.clip();
+
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        p1.update();
+        p1.draw();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < maxDist * maxDist) {
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - distSq / (maxDist * maxDist)})`;
+            ctx.stroke();
+          }
+        }
+      }
+
+      ctx.restore();
+      requestAnimationFrame(animate);
+    }
+
+    return { abrir(){ if (!corriendo){ corriendo = true; animate(); } } };
+  })();
+
+  /* =====================================================================
+     INTEGRANTES — espirógrafo
+     ===================================================================== */
+  const Int = (() => {
+    const cvs = document.getElementById('spiro');
+    const ctx = cvs.getContext('2d');
+    let W=0,H=0,cx=0,cy=0, corriendo=false, params, t=0;
+    const step=0.02;
+
+    function setCanvasSize(){
+      const dpr = window.devicePixelRatio || 1;
+      const rect = cvs.getBoundingClientRect();
+      W=rect.width; H=rect.height;
+      cvs.width=Math.round(W*dpr); cvs.height=Math.round(H*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      cx=W/2; cy=H/2;
+    }
+    function clear(){ ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H); }
+    function gcd(a,b){ return b ? gcd(b,a%b) : a; }
+    function periodHypo(R,r){ return (2*Math.PI)*r/gcd(r,Math.abs(R-r)); }
+    function periodEpi(R,r){ return (2*Math.PI)*r/gcd(r,R+r); }
+    function nextParams(){
+      const R=90+Math.floor(Math.random()*60);
+      const r=20+Math.floor(Math.random()*70);
+      const d=10+Math.floor(Math.random()*80);
+      const mode=Math.random()<0.5?'hypo':'epi';
+      const period=mode==='hypo'?periodHypo(R,r):periodEpi(R,r);
+      const M=6, maxR=(mode==='hypo')?(R-r)+d:(R+r)+d;
+      const limit=Math.min(W,H)/2-M; const s=Math.min(1,limit/maxR);
+      return {R,r,d,mode,period,s};
+    }
+    function xy(tt,p){
+      let x,y;
+      if(p.mode==='hypo'){ const k=p.R-p.r, m=k/p.r; x=k*Math.cos(tt)+p.d*Math.cos(m*tt); y=k*Math.sin(tt)-p.d*Math.sin(m*tt); }
+      else{ const k=p.R+p.r, m=k/p.r; x=k*Math.cos(tt)-p.d*Math.cos(m*tt); y=k*Math.sin(tt)-p.d*Math.sin(m*tt); }
+      return [cx+x*p.s, cy+y*p.s];
+    }
+    function drawInit(){
+      clear(); ctx.lineWidth=1.4; ctx.lineJoin='round'; ctx.lineCap='round';
+      ctx.strokeStyle='rgba(255,255,255,0.01)';
+      ctx.beginPath(); const [x0,y0]=xy(0,params); ctx.moveTo(x0,y0); t=0;
+    }
+    function animate(){
+      if (!document.body.classList.contains('en-integrantes')) { corriendo = false; return; }
+      for(let i=0;i<8;i++){ t+=step; const [x,y]=xy(t,params); ctx.lineTo(x,y); }
+      ctx.stroke(); if(t>=params.period){ params=nextParams(); drawInit(); }
+      requestAnimationFrame(animate);
+    }
+    cvs.addEventListener('click', ()=>{ params=nextParams(); drawInit(); });
+    window.addEventListener('resize', ()=>{ if (corriendo){ setCanvasSize(); params=nextParams(); drawInit(); } });
+
+    document.querySelectorAll('#sec-integrantes [data-member]').forEach(member=>{
+      const photo = member.querySelector('[data-photo]');
+      photo.addEventListener('mouseenter', ()=> member.classList.add('open'));
+      photo.addEventListener('mouseleave', ()=> member.classList.remove('open'));
+      photo.addEventListener('click', (e)=>{
+        e.preventDefault();
+        member.classList.toggle('open');
+      });
+    });
+
+    return {
+      abrir(){
+        if (corriendo) return;
+        corriendo = true;
+        setCanvasSize(); params = nextParams(); drawInit(); animate();
+      }
+    };
+  })();
+
+  /* =====================================================================
+     IDIOMAS
+     ===================================================================== */
+  function setLang(l) {
+    idioma = textos[l] ? l : 'es';
+    document.documentElement.lang = idioma;
+    document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = T(el.dataset.i18n));
+    document.querySelectorAll('[data-hint]').forEach(el => el.dataset.hint = T('hint'));
+    frame.title = T('click');
+    document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === idioma));
+    Exp.idioma();
+    Gal.idioma();
+    try { localStorage.setItem('hz-lang', idioma); } catch (e) {}
+  }
+
+  document.querySelectorAll('#lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+  /* =====================================================================
+     NAVEGACIÓN ENTRE SECCIONES (#experimentos, #proyectos, …)
+     ===================================================================== */
+  const secciones = ['inicio', 'experimentos', 'proyectos', 'galeria', 'bio', 'integrantes'];
+
+  function irA() {
+    const id = location.hash.replace('#', '');
+    const sec = secciones.includes(id) ? id : 'inicio';
+    secciones.forEach(s => {
+      document.getElementById('sec-' + s).classList.toggle('on', s === sec);
+      document.body.classList.toggle('en-' + s, s === sec);
+    });
+    window.scrollTo(0, 0);
+    setTimeout(() => window.scrollTo(0, 0), 0); // el navegador salta al ancla; lo devolvemos arriba
+    if (sec === 'experimentos') Exp.abrir();
+    if (sec === 'bio') Bio.abrir();
+    if (sec === 'integrantes') Int.abrir();
+  }
+
+  window.addEventListener('hashchange', irA);
+
+  let guardado = 'es';
+  try { guardado = localStorage.getItem('hz-lang') || 'es'; } catch (e) {}
+  setLang(guardado);
+  irA();
   </script>
 
 </body>
