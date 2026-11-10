@@ -146,12 +146,10 @@
     }
 
     #sec-inicio .frame {
+      position: relative;
       width: var(--frame-w);
       height: var(--frame-h);
-      display: flex;
-      gap: var(--gap);
-      align-items: center;
-      justify-content: center;
+      gap: var(--gap); /* separación entre módulos (la lee el script) */
       cursor: pointer;
       outline: none;
     }
@@ -161,13 +159,14 @@
       border-radius: 12px;
     }
 
+    /* Cada módulo de la subdivisión Fibonacci (cortes verticales y horizontales combinados) */
     #sec-inicio .col {
-      height: 86%;
+      position: absolute;
       background: transparent;
       border: 2px solid #fff;
       box-sizing: border-box;
       box-shadow: 0 0 6px #fff, 0 0 16px #ffffffb3, 0 0 32px #ffffff80, 0 0 64px #ffffff4d;
-      transition: width 380ms ease, height 300ms ease, transform 120ms ease;
+      transition: left 380ms ease, top 380ms ease, width 380ms ease, height 380ms ease, opacity 300ms ease, transform 120ms ease;
     }
 
     #sec-inicio .frame:active .col {
@@ -642,6 +641,11 @@
           <div class="col"></div>
           <div class="col"></div>
           <div class="col"></div>
+          <div class="col"></div>
+          <div class="col"></div>
+          <div class="col"></div>
+          <div class="col"></div>
+          <div class="col"></div>
         </div>
 
         <nav class="menu" aria-label="Secciones">
@@ -879,23 +883,80 @@
   const frame = document.getElementById('frame');
   const cols = [...frame.querySelectorAll('.col')];
 
+  // Rectángulo de Fibonacci: cada módulo es un cuadrado de la serie (1,1,2,3,5,8,13,21)
+  // que se agrega girando alrededor de los anteriores, así se combinan cortes verticales y horizontales.
+  // En cada clic se elige al azar cuántos módulos, hacia qué lado arranca la espiral,
+  // si gira a favor o en contra del reloj y desde qué esquina nace; no repite ninguna de las últimas 12.
   const fib = [1, 1, 2, 3, 5, 8, 13, 21];
-  let paso = 0;
+  let recientes = []; // últimas composiciones mostradas
+
+  // misma composición = mismos módulos en el mismo lugar (con tolerancia para decimales)
+  function igual(a, b) {
+    if (a.length !== b.length) return false;
+    const cerca = (p, q) => Math.abs(p.x - q.x) < 1e-6 && Math.abs(p.y - q.y) < 1e-6 && Math.abs(p.w - q.w) < 1e-6 && Math.abs(p.h - q.h) < 1e-6;
+    return a.every(p => b.some(q => cerca(p, q)));
+  }
+
+  function rectanguloFibonacci(n, inicio, sentido) {
+    const t = [{ x: 0, y: 0, s: 1 }];
+    let x0 = 0, y0 = 0, x1 = 1, y1 = 1;
+    for (let k = 1; k < n; k++) {
+      const s = fib[k];
+      switch (((inicio + sentido * (k - 1)) % 4 + 4) % 4) {
+        case 0: t.push({ x: x1,     y: y0,     s }); x1 += s; break; // a la derecha
+        case 1: t.push({ x: x0,     y: y1,     s }); y1 += s; break; // abajo
+        case 2: t.push({ x: x0 - s, y: y0,     s }); x0 -= s; break; // a la izquierda
+        case 3: t.push({ x: x0,     y: y0 - s, s }); y0 -= s; break; // arriba
+      }
+    }
+    // pasar a coordenadas 0..1 del rectángulo total
+    const W = x1 - x0, H = y1 - y0;
+    let mods = t.map(m => ({ x: (m.x - x0) / W, y: (m.y - y0) / H, w: m.s / W, h: m.s / H }));
+    // si quedó más alto que ancho, se gira para que acompañe el formato apaisado
+    if (H > W) mods = mods.map(m => ({ x: m.y, y: m.x, w: m.h, h: m.w }));
+    return mods;
+  }
 
   function randomize() {
-    const trio = fib.slice(paso, paso + 3);
-    paso = (paso + 1) % (fib.length - 2);
-    for (let i = trio.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [trio[i], trio[j]] = [trio[j], trio[i]];
-    }
-    const total = trio[0] + trio[1] + trio[2];
-    const widths = trio.map(v => v / total);
-    cols.forEach((el, i) => el.style.width = (widths[i] * 100).toFixed(2) + '%');
-    if (Math.random() < 0.5) {
-      [...cols].reverse().forEach(c => frame.appendChild(c));
-    }
+    const azar = n => Math.floor(Math.random() * n);
+    let mods;
+    do {
+      const cantidad = 2 + azar(fib.length - 1);          // de 2 a 8 módulos
+      mods = rectanguloFibonacci(cantidad, azar(4), Math.random() < 0.5 ? 1 : -1);
+      const fx = Math.random() < 0.5, fy = Math.random() < 0.5; // desde qué esquina nace
+      mods = mods.map(m => ({ x: fx ? 1 - m.x - m.w : m.x, y: fy ? 1 - m.y - m.h : m.y, w: m.w, h: m.h }));
+    } while (recientes.some(r => igual(mods, r)));
+    recientes.push(mods);
+    if (recientes.length > 12) recientes.shift(); // no vuelve a aparecer ninguna de las últimas 12
+
+    ultimo = mods;
+    dibujar();
   }
+
+  let ultimo = [];
+  function dibujar() {
+    const mods = ultimo;
+    const g = parseFloat(getComputedStyle(frame).columnGap) || 16;
+    const Wf = frame.clientWidth, Hf = frame.clientHeight * 0.86; // mismo 86% de alto que antes
+    const top0 = (frame.clientHeight - Hf) / 2;
+
+    cols.forEach((el, i) => {
+      const m = mods[i];
+      if (!m) {
+        el.style.opacity = '0';
+        el.style.width = el.style.height = '0px';
+        return;
+      }
+      el.style.opacity = '1';
+      el.style.left   = (m.x * Wf + g / 2) + 'px';
+      el.style.top    = (top0 + m.y * Hf + g / 2) + 'px';
+      el.style.width  = Math.max(0, m.w * Wf - g) + 'px';
+      el.style.height = Math.max(0, m.h * Hf - g) + 'px';
+    });
+  }
+
+  // recalcular si cambia el tamaño de la ventana
+  window.addEventListener('resize', dibujar);
 
   frame.addEventListener('click', randomize);
   frame.addEventListener('keydown', (e) => {
@@ -1279,6 +1340,7 @@
     });
     window.scrollTo(0, 0);
     setTimeout(() => window.scrollTo(0, 0), 0); // el navegador salta al ancla; lo devolvemos arriba
+    if (sec === 'inicio') dibujar();
     if (sec === 'experimentos') Exp.abrir();
     if (sec === 'bio') Bio.abrir();
     if (sec === 'integrantes') Int.abrir();
