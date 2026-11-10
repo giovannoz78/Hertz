@@ -193,14 +193,23 @@
       return parts.map(p => p * rest + minFrac);
     }
 
+    // Fibonacci: cada clic avanza un paso (1·1·2 → 1·2·3 → 2·3·5 → 3·5·8 → 5·8·13 …) y vuelve a empezar
+    const fib = [1, 1, 2, 3, 5, 8, 13, 21];
+    let paso = 0;
+
     function randomize() {
-      const widths = randomProportions(3, 0.18);
+      const trio = fib.slice(paso, paso + 3);
+      paso = (paso + 1) % (fib.length - 2);
+      for (let i = trio.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [trio[i], trio[j]] = [trio[j], trio[i]];
+      }
+      const total = trio[0] + trio[1] + trio[2];
+      const widths = trio.map(v => v / total);
       cols.forEach((el, i) => el.style.width = (widths[i] * 100).toFixed(2) + '%');
       if (Math.random() < 0.5) {
         [...cols].reverse().forEach(c => frame.appendChild(c));
       }
-      const h = 78 + Math.floor(Math.random() * 13); // 78–90%
-      cols.forEach(el => el.style.height = h + '%');
     }
 
     window.addEventListener('DOMContentLoaded', randomize);
