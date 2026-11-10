@@ -131,6 +131,18 @@
       text-shadow: 0 0 6px #fff, 0 0 18px #ffffff88;
       outline: none;
     }
+
+    /* Teléfono: que no se estire a lo alto */
+    @media (max-width: 720px) {
+      :root {
+        --frame-w: 88vw;
+        --frame-h: 66vw;
+      }
+      .wrap {
+        min-height: 100svh;
+        padding: 0;
+      }
+    }
   </style>
 </head>
 <body>
