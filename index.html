@@ -132,6 +132,43 @@
       outline: none;
     }
 
+    /* Idiomas */
+    .lang {
+      position: fixed;
+      top: 24px;
+      right: 16px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .lang button {
+      background: none;
+      border: none;
+      padding: 0;
+      color: #fff;
+      font: inherit;
+      font-size: .85rem;
+      letter-spacing: .06em;
+      opacity: .45;
+      cursor: pointer;
+      transition: opacity .2s ease, text-shadow .2s ease;
+    }
+
+    .lang button:hover,
+    .lang button.on {
+      opacity: 1;
+      filter: drop-shadow(0 0 4px #ffffffaa);
+    }
+
+    .lang svg {
+      display: block;
+      width: 24px;
+      height: 16px;
+      border-radius: 2px;
+      outline: 1px solid #ffffff40;
+    }
+
     /* Teléfono: que no se estire a lo alto */
     @media (max-width: 720px) {
       :root {
@@ -154,6 +191,22 @@
     </a>
     <span>[Hz]</span>
   </header>
+
+  <!-- IDIOMAS -->
+  <nav class="lang" id="lang" aria-label="Idioma">
+    <button data-lang="es" title="Español">
+      <svg viewBox="0 0 9 6" preserveAspectRatio="none"><rect width="9" height="6" fill="#74ACDF"/><rect y="2" width="9" height="2" fill="#fff"/><circle cx="4.5" cy="3" r=".6" fill="#F6B40E"/></svg>
+    </button>
+    <button data-lang="en" title="English">
+      <svg viewBox="0 0 60 30" preserveAspectRatio="none"><clipPath id="uk-t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#uk-t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>
+    </button>
+    <button data-lang="fr" title="Français">
+      <svg viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>
+    </button>
+    <button data-lang="de" title="Deutsch">
+      <svg viewBox="0 0 5 3" preserveAspectRatio="none"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>
+    </button>
+  </nav>
 
   <!-- Hero -->
   <main>
@@ -211,6 +264,31 @@
         [...cols].reverse().forEach(c => frame.appendChild(c));
       }
     }
+
+    // --- Idiomas ---
+    const textos = {
+      es: { m1: 'Experimentos', m2: 'Proyectos', m3: 'Galería',  m4: 'Bio', m5: 'Integrantes', click: 'Click para cambiar',   secciones: 'Secciones', idioma: 'Idioma' },
+      en: { m1: 'Experiments',  m2: 'Projects',  m3: 'Gallery',  m4: 'Bio', m5: 'Members',     click: 'Click to change',      secciones: 'Sections',  idioma: 'Language' },
+      fr: { m1: 'Expériences',  m2: 'Projets',   m3: 'Galerie',  m4: 'Bio', m5: 'Membres',     click: 'Cliquez pour changer', secciones: 'Sections',  idioma: 'Langue' },
+      de: { m1: 'Experimente',  m2: 'Projekte',  m3: 'Galerie',  m4: 'Bio', m5: 'Mitglieder',  click: 'Klicken zum Ändern',   secciones: 'Bereiche',  idioma: 'Sprache' }
+    };
+
+    function setLang(l) {
+      const t = textos[l] || textos.es;
+      document.documentElement.lang = l;
+      ['m1', 'm2', 'm3', 'm4', 'm5'].forEach(id => document.getElementById(id).textContent = t[id]);
+      frame.title = t.click;
+      document.querySelector('.menu').setAttribute('aria-label', t.secciones);
+      document.getElementById('lang').setAttribute('aria-label', t.idioma);
+      document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === l));
+      try { localStorage.setItem('hz-lang', l); } catch (e) {}
+    }
+
+    document.querySelectorAll('#lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+    let guardado = 'es';
+    try { guardado = localStorage.getItem('hz-lang') || 'es'; } catch (e) {}
+    setLang(guardado);
 
     window.addEventListener('DOMContentLoaded', randomize);
     frame.addEventListener('click', randomize);
