@@ -114,12 +114,15 @@
       { src: 'experimentos/exp02.jpg', title: 'Estupor', meta: 'Proyección Mapping · entorno generativo', link:'' },
       { src: 'experimentos/exp03.png', title: 'Piso LED reactivo', meta: 'Audio + pasos · prototipo', link:'' },
       { src: 'experimentos/exp04.jpg', title: 'Proyección Láser', meta: 'Láser & Máquina de Humo', link:'' },
-      { src: 'experimentos/exp05.png', title: 'Entorno generativo', meta: 'Instalación', link:'' },
+      { src: 'experimentos/exp05.jpg', title: 'Entorno generativo', meta: 'Instalación', link:'' },
       { src: 'experimentos/exp06.jpg', title: 'Numen', meta: '2025 · PROYECCIÓN SOBRE AGUA', link:'https://instagram.com/tu_cuenta' },
       { src: 'experimentos/exp07.png', title: 'Estupor', meta: 'Mapping 3D · Impresión 3D', link:'' },
       { src: 'experimentos/exp08.png', title: 'Piso LED reactivo', meta: 'Audio + pasos · prototipo', link:'' },
       { src: 'experimentos/exp09.jpg', title: 'Proyección Láser', meta: 'Láser & Máquina de Humo', link:'' },
       { src: 'experimentos/exp10.png', title: 'Entorno generativo', meta: 'Instalación', link:'' },
+      { src: 'experimentos/exp11.png', title: 'Tinta Fluorescente', meta: 'Instalación', link:'' },
+      { src: 'experimentos/exp12.jpg', title: 'Tinta Fluorescente', meta: 'Instalación', link:'' },
+      
     ];
 
     // --- DOM refs ---
@@ -140,9 +143,16 @@
       const item = items[idx];
 
       hero.classList.add('fade');
-      // Pre-carga imagen
+      // Pre-carga imagen (prueba .jpg / .JPG / .png / .PNG / .jpeg hasta encontrar la que existe)
       const img = new Image();
+      const opciones = variantes(item.src);
+      let n = 0;
+      img.onerror = () => {
+        n++;
+        if (n < opciones.length) img.src = opciones[n];
+      };
       img.onload = () => {
+        item.src = opciones[n];
         hero.src = img.src;
         hero.alt = item.title || 'Experimento';
         setCaption(item);
@@ -156,12 +166,25 @@
         preload((idx+1)%items.length);
         preload((idx-1+items.length)%items.length);
       };
-      img.src = item.src;
+      img.src = opciones[0];
+    }
+
+    function variantes(src){
+      const base = src.replace(/\.[^.\/]+$/, '');
+      const lista = [src];
+      for (const ext of ['.jpg','.JPG','.png','.PNG','.jpeg','.JPEG']) {
+        if (!lista.includes(base + ext)) lista.push(base + ext);
+      }
+      return lista;
     }
 
     function preload(i){
+      const opciones = variantes(items[i].src);
+      let n = 0;
       const p = new Image();
-      p.src = items[i].src;
+      p.onerror = () => { n++; if (n < opciones.length) p.src = opciones[n]; };
+      p.onload  = () => { items[i].src = opciones[n]; };
+      p.src = opciones[0];
     }
 
     function next(){ show(idx+1); }
