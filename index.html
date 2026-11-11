@@ -622,9 +622,6 @@
     <button data-lang="es" title="Español">
       <svg viewBox="0 0 9 6" preserveAspectRatio="none"><rect width="9" height="6" fill="#74ACDF"/><rect y="2" width="9" height="2" fill="#fff"/><circle cx="4.5" cy="3" r=".6" fill="#F6B40E"/></svg>
     </button>
-    <button data-lang="en" title="English">
-      <svg viewBox="0 0 60 30" preserveAspectRatio="none"><clipPath id="uk-t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#uk-t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>
-    </button>
     <button data-lang="fr" title="Français">
       <svg viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="1" height="2" fill="#0055A4"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#EF4135"/></svg>
     </button>
@@ -809,19 +806,6 @@
       coleccion: 'Colección', codigo: 'Código', autor: 'Autor', anio: 'Año', tecnica: 'Técnica', dimensiones: 'Dimensiones',
       duracion: 'Duración', descripcion: 'Descripción', video: 'Video', verVimeo: 'Ver en Vimeo', obra: 'Obra'
     },
-    en: {
-      inicio: 'Home', m1: 'Experiments', m2: 'Projects', m3: 'Gallery', m4: 'Bio', m5: 'Members',
-      click: 'Click to change',
-      bioTitulo: 'Biography',
-      bioTexto: 'Our principle is to be authentic across what we think, feel and do. Techniques and technological resources are not what matters most; what matters is our thinking about art in relation to who we are.',
-      bioFestivales: 'MAPP_MTL International Video Mapping Festival 2023, Canada. Punto y Raya Festival 2023 Edition, Portugal. MAPP_MTL International Video Mapping Festival 2022, Canada. Curitiba International Video Mapping Festival 2021, Brazil. 1Minute International Video Mapping Festival 2021, Tokyo, Japan. Itaú Bank Visual Arts Award 2021, Buenos Aires, Argentina. Punto y Raya Festival 2021 Edition, Vienna, Austria. MAPP_JP International Video Mapping Festival 2021, Canada. Itaú Bank Visual Arts Award 2019, Buenos Aires, Argentina.',
-      volver: 'Back to home',
-      hint: 'Hover over the image',
-      andres: '(21-07-1988) is a musician and producer. Since 2007 he has developed an experimental body of work with field recordings, tapes, strings and digital processing. Co-founder of CAS Records (2015), he has released 31 records and collaborated with artists from diverse disciplines. His work has been presented in the Americas, Europe and Asia.',
-      giovanni: '(01-06-1978) holds a degree in Multimedia Arts and a postgraduate degree in Contemporary Artistic Languages. His work has been exhibited and awarded at international festivals, with presence at art fairs in Dubai, New York, Belgium and Argentina.',
-      coleccion: 'Collection', codigo: 'Code', autor: 'Author', anio: 'Year', tecnica: 'Technique', dimensiones: 'Dimensions',
-      duracion: 'Duration', descripcion: 'Description', video: 'Video', verVimeo: 'Watch on Vimeo', obra: 'Work'
-    },
     fr: {
       inicio: 'Accueil', m1: 'Expériences', m2: 'Projets', m3: 'Galerie', m4: 'Bio', m5: 'Membres',
       click: 'Cliquez pour changer',
@@ -852,20 +836,20 @@
 
   // Frases que aparecen dentro de los datos de Experimentos y Galería
   const frases = {
-    '2025 · PROYECCIÓN SOBRE AGUA':          { en: '2025 · PROJECTION ON WATER', fr: '2025 · PROJECTION SUR L’EAU', de: '2025 · PROJEKTION AUF WASSER' },
-    'Proyección Mapping · entorno generativo':{ en: 'Projection mapping · generative environment', fr: 'Projection mapping · environnement génératif', de: 'Projection Mapping · generative Umgebung' },
-    'Audio + pasos · prototipo':             { en: 'Audio + footsteps · prototype', fr: 'Audio + pas · prototype', de: 'Audio + Schritte · Prototyp' },
-    'Láser & Máquina de Humo':               { en: 'Laser & Smoke Machine', fr: 'Laser & Machine à fumée', de: 'Laser & Nebelmaschine' },
-    'Instalación':                           { en: 'Installation', fr: 'Installation', de: 'Installation' },
-    'Mapping 3D · Impresión 3D':             { en: '3D Mapping · 3D Printing', fr: 'Mapping 3D · Impression 3D', de: '3D-Mapping · 3D-Druck' },
-    'Piso LED reactivo':                     { en: 'Reactive LED floor', fr: 'Sol LED réactif', de: 'Reaktiver LED-Boden' },
-    'Proyección Láser':                      { en: 'Laser Projection', fr: 'Projection laser', de: 'Laserprojektion' },
-    'Entorno generativo':                    { en: 'Generative environment', fr: 'Environnement génératif', de: 'Generative Umgebung' },
-    'Tinta Fluorescente':                    { en: 'Fluorescent Ink', fr: 'Encre fluorescente', de: 'Fluoreszierende Tinte' },
-    'LED interactivo + Audio':               { en: 'Interactive LED + Audio', fr: 'LED interactive + Audio', de: 'Interaktive LED + Audio' },
-    'Instalación Audiovisual':               { en: 'Audiovisual Installation', fr: 'Installation audiovisuelle', de: 'Audiovisuelle Installation' },
-    'Instalación luminosa reactiva al movimiento.': { en: 'Light installation that reacts to movement.', fr: 'Installation lumineuse réactive au mouvement.', de: 'Lichtinstallation, die auf Bewegung reagiert.' },
-    'Artista 1':                             { en: 'Artist 1', fr: 'Artiste 1', de: 'Künstler 1' }
+    '2025 · PROYECCIÓN SOBRE AGUA':          { fr: '2025 · PROJECTION SUR L’EAU', de: '2025 · PROJEKTION AUF WASSER' },
+    'Proyección Mapping · entorno generativo':{ fr: 'Projection mapping · environnement génératif', de: 'Projection Mapping · generative Umgebung' },
+    'Audio + pasos · prototipo':             { fr: 'Audio + pas · prototype', de: 'Audio + Schritte · Prototyp' },
+    'Láser & Máquina de Humo':               { fr: 'Laser & Machine à fumée', de: 'Laser & Nebelmaschine' },
+    'Instalación':                           { fr: 'Installation', de: 'Installation' },
+    'Mapping 3D · Impresión 3D':             { fr: 'Mapping 3D · Impression 3D', de: '3D-Mapping · 3D-Druck' },
+    'Piso LED reactivo':                     { fr: 'Sol LED réactif', de: 'Reaktiver LED-Boden' },
+    'Proyección Láser':                      { fr: 'Projection laser', de: 'Laserprojektion' },
+    'Entorno generativo':                    { fr: 'Environnement génératif', de: 'Generative Umgebung' },
+    'Tinta Fluorescente':                    { fr: 'Encre fluorescente', de: 'Fluoreszierende Tinte' },
+    'LED interactivo + Audio':               { fr: 'LED interactive + Audio', de: 'Interaktive LED + Audio' },
+    'Instalación Audiovisual':               { fr: 'Installation audiovisuelle', de: 'Audiovisuelle Installation' },
+    'Instalación luminosa reactiva al movimiento.': { fr: 'Installation lumineuse réactive au mouvement.', de: 'Lichtinstallation, die auf Bewegung reagiert.' },
+    'Artista 1':                             { fr: 'Artiste 1', de: 'Künstler 1' }
   };
 
   let idioma = 'es';
